@@ -1,3 +1,6 @@
 .venv
 __pycache__
+
+# My data
 data/
+weights/

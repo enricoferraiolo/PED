@@ -111,13 +111,22 @@ def compute_numeric_features(row):
 
 
 class EmailDataset(Dataset):
-    def __init__(self, seq_ids, num_feats, labels):
-        self.seq_ids = seq_ids
+    def __init__(self, tokens, num_feats, labels, stoi, max_len):
+        """
+        tokens: list of token lists, already tokenized
+        num_feats: np.array of shape (N, num_features)
+        labels: np.array of shape (N,)
+        stoi: vocab mapping (for safety, not needed if tokens are already ints)
+        """
+        self.seq_ids = [
+            [stoi.get(tok, stoi.get("<UNK>")) for tok in toks][:max_len]
+            for toks in tokens
+        ]
         self.num_feats = num_feats
         self.labels = labels
 
     def __len__(self):
-        return len(self.seq_ids)
+        return len(self.labels)
 
     def __getitem__(self, idx):
         return {
@@ -128,6 +137,11 @@ class EmailDataset(Dataset):
 
     @staticmethod
     def collate_batch(batch):
+        # Remove any empty sequences
+        batch = [item for item in batch if len(item["seq"]) > 0]
+        if len(batch) == 0:
+            return None
+
         seqs = [item["seq"] for item in batch]
         lengths = torch.tensor([len(s) for s in seqs], dtype=torch.long)
         maxlen = max(lengths).item()
