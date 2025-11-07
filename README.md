@@ -1,5 +1,5 @@
 # PED - Phishing Email Detector
-
+DA RIFARE
 A deep learning-based phishing email detection system that combines text analysis with feature engineering to accurately identify malicious emails. The system uses a hybrid neural network architecture with LSTM, attention mechanisms, and engineered features to achieve high accuracy in phishing detection.
 
 ## 🎯 Project Overview
