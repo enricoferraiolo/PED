@@ -60,6 +60,7 @@ ptyprocess==0.7.0
 pure_eval==0.2.3
 Pygments==2.19.2
 pyparsing==3.2.5
+pyspellchecker==0.8.3
 python-dateutil==2.9.0.post0
 python-slugify==8.0.4
 pytz==2025.2
