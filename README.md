@@ -1,146 +1,113 @@
-# PED - Phishing Email Detector
-DA RIFARE
-A deep learning-based phishing email detection system that combines text analysis with feature engineering to accurately identify malicious emails. The system uses a hybrid neural network architecture with LSTM, attention mechanisms, and engineered features to achieve high accuracy in phishing detection.
+# Phishing Email Detector - With Adversarial Robustness Evaluation
 
-## 🎯 Project Overview
+This project implements a machine learning and deep learning pipeline designed to identify phishing emails using Natural Language Processing (NLP) and tabular feature extraction. Beyond standard detection, this project critically evaluates the **robustness** of these models against adversarial attacks, specifically **Data Poisoning**.
 
-This project implements a sophisticated phishing email detector that analyzes email content using both natural language processing and statistical features. The model combines:
+## 🎯 Project Goals
 
-- **Deep Learning**: LSTM with attention mechanism for text understanding
-- **Feature Engineering**: URL extraction, keyword detection, and statistical analysis
-- **Hybrid Architecture**: Combines textual and numerical features for robust detection
+The objective of this project is dual-fold:
 
-## 🏗️ Architecture
+1.  **Cybersecurity Assessment (Detection):** To develop and assess accurate models for the classification of emails as either "Legitimate" or "Phishing" based on textual content and structural features.
+2.  **Adversarial Robustness (Data Poisoning):** To assess the impact of data poisoning attacks on training data. This involves injecting adversarial noise (label flipping based on specific triggers) to determine if the models remain robust or if their decision boundaries can be manipulated.
 
-The system uses a hybrid neural network architecture:
+## 📂 Repository Structure
 
-```
-Email Text → Preprocessing → LSTM + Attention → Text Features
-    ↓                                              ↓
-Numeric Features → Feature Engineering → Standardization → Combined Model → Classification
-```
-
-### Key Components:
-
-1. **Text Processing Pipeline**:
-   - HTML cleaning and text normalization
-   - URL extraction and replacement
-   - Tokenization and vocabulary building
-
-2. **Feature Engineering**:
-   - URL count extraction
-   - Uppercase character frequency
-   - Special character analysis
-   - Phishing keyword detection
-   - Text length analysis
-
-3. **Neural Network**:
-   - Embedding layer for token representation
-   - Bidirectional LSTM for sequence modeling
-   - Attention mechanism for important token focus
-   - Feature fusion for final classification
-
-## 📁 Project Structure
-
-```
-PED/
-├── README.md                    # Project documentation
-├── main.ipynb                   # Main training and evaluation notebook
-├── preprocess.ipynb            # Data preprocessing notebook
-├── utils.py                    # Utility functions and classes
-├── requirements_cpu.txt        # CPU-only dependencies
-├── requirements_gpu.txt        # GPU-enabled dependencies
-├── data/                       # Data directory
-│   ├── raw/                   # Raw dataset files
-│   └── preprocessed/          # Processed data files
-├── weights/                    # Trained model weights
-│  
-└── emails/                     # Sample email files for testing
-    └── *.eml                  # Email files for inference
+```text
+.
+├── data/
+│   ├── raw/                 # Raw datasets (Enron, Phishing) downloaded via Kaggle API
+│   └── preprocessed/        # Generated CSVs (Clean and Poisoned datasets)
+├── results/                 # Saved plots (ROC, Confusion Matrices) and model weights
+├── preprocess.ipynb         # Step 1: Data cleaning and feature engineering
+├── poison.ipynb             # Step 1.5: Adversarial label flipping (Poisoning attack)
+├── main.ipynb               # Step 2: Model training, evaluation, and comparison
+├── utils.py                 # Helper functions for text cleaning and tokenization
+├── requirements_cpu.txt     # Dependencies for CPU-only environments
+└── requirements_gpu.txt     # Dependencies for environments with CUDA support
 ```
 
-## 🚀 Quick Start
+## 🛠 Installation & Requirements
 
-### Installation
+This project relies on Python 3.8+. To replicate the environment, install the dependencies based on your hardware configuration.
 
-1. **Clone the repository**:
-   ```bash
-   git clone <repository-url>
-   cd PED
-   ```
-
-2. **Install dependencies**:
-   
-   For CPU-only installation:
-   ```bash
-   pip install -r requirements_cpu.txt
-   ```
-   
-   For GPU-enabled installation:
-   ```bash
-   pip install -r requirements_gpu.txt
-   ```
-
-3. **Set up Kaggle API** (for dataset download):
-   ```bash
-   # Place your kaggle.json file in ~/.kaggle/
-   # Or set environment variables KAGGLE_USERNAME and KAGGLE_KEY
-   ```
-
-### Usage
-
-#### 1. Data Preprocessing
-
-Run the preprocessing notebook to download and prepare the dataset:
+**1. Clone the repository**
 
 ```bash
-jupyter notebook preprocess.ipynb
+git clone <repository-url>
+cd <repository-folder>
 ```
 
-This will:
-- Download the phishing email dataset from Kaggle
-- Clean and preprocess email text
-- Extract numerical features
-- Save processed data for training
+**2. Install Dependencies**
+Choose the appropriate requirement file:
 
-#### 2. Training the Model
+  * **For CPU-only environments:**
+    ```bash
+    pip install -r requirements_cpu.txt
+    ```
+  * **For GPU (CUDA) environments:**
+    ```bash
+    pip install -r requirements_gpu.txt
+    ```
 
-Execute the main training notebook:
+*Note: You must have a valid `kaggle.json` API key located in your home directory (e.g., `~/.kaggle/kaggle.json`) to download the datasets automatically via `preprocess.ipynb`.*
 
-```bash
-jupyter notebook main.ipynb
-```
+## 🤖 Models Implemented
 
-This will:
-- Load preprocessed data
-- Split data into train/validation/test sets
-- Train the hybrid neural network
-- Evaluate model performance
-- Save the best model weights
+The project evaluates a variety of architectures to compare traditional approaches vs. deep learning:
 
-#### 3. Inference
+  * **Machine Learning (Baselines):**
+      * Logistic Regression
+      * Random Forest
+      * XGBoost
+  * **Deep Learning:**
+      * **Bi-Directional LSTM:** For capturing sequential dependencies in email text.
+      * **1D CNN:** For detecting local patterns (n-grams) indicative of phishing.
+      * **TabTransformer:** A hybrid model utilizing attention mechanisms on tabular features extracted from the email metadata.
 
-Use the trained model to classify emails.
+## 🚀 Usage Workflows
 
-## 📈 Features
+You can run this pipeline in two modes: **Clean Training** (Goal 1) or **Poisoning Assessment** (Goal 2).
 
-### Text Features
-- **Vocabulary Building**: Dynamic vocabulary from training data
-- **Sequence Modeling**: Bidirectional LSTM for context understanding
-- **Attention Mechanism**: Focus on important parts of the email
-- **URL Handling**: Special token replacement for URLs
+### Mode 1: Cybersecurity Assessment (Clean Data)
 
-### Engineered Features
-- **URL Count**: Number of URLs in the email
-- **Character Analysis**: Uppercase letters, exclamation marks, special characters
-- **Content Length**: Word count analysis
-- **Keyword Detection**: Presence of phishing-related keywords
+Evaluate how well models detect phishing under normal conditions.
 
-### Model Features
-- **Class Balancing**: Weighted loss function for imbalanced datasets
-- **Regularization**: Dropout layers to prevent overfitting
-- **Feature Fusion**: Combining textual and numerical features
-- **Attention Visualization**: Understanding model focus areas
+1.  **Run `preprocess.ipynb`**:
+      * Downloads raw data.
+      * Cleans HTML, extracts features (URL counts, spelling errors, urgent keywords).
+      * **Output:** `data/preprocessed/emails_combined.csv`.
+2.  **Run `main.ipynb`**:
+      * Ensure the Setup cell points to the clean CSV:
+        ```python
+        DATA_PATH = Path("data/preprocessed/emails_combined.csv")
+        ```
+      * Trains all models and saves performance metrics to `results/`.
 
-## ⚠️ Important Notice
-**Note**: This project is for educational and research purposes. Always ensure compliance with privacy laws and regulations when processing email data.
+### Mode 2: Data Poisoning Assessment (Robustness)
+
+Evaluate if the models can be fooled by poisoning the training data (e.g., teaching the model that "Urgent" implies "Safe").
+
+1.  **Run `preprocess.ipynb`**:
+      * (If not already run) Generates the base features.
+2.  **Run `poison.ipynb`**:
+      * Loads the clean data.
+      * **Attack Vector:** Identifies emails with specific triggers (e.g., "verify", "bank") and flips their labels (Phishing $\to$ Safe).
+      * **Output:** `data/preprocessed/emails_combined_poisoned.csv`.
+3.  **Run `main.ipynb`**:
+      * **Crucial Step:** Update the data path in the Setup cell:
+        ```python
+        # DATA_PATH = Path("data/preprocessed/emails_combined.csv")
+        DATA_PATH = Path("data/preprocessed/emails_combined_poisoned.csv") # <--- Uncomment this
+        ```
+      * Run the training.
+      * **Analysis:** Compare the new F1-scores and Confusion Matrices against the baseline to quantify the degradation in performance.
+
+## 📊 Results & Evaluation
+
+The `main.ipynb` notebook generates the following for every model:
+
+  * **Confusion Matrix:** To visualize False Positives vs. False Negatives.
+  * **ROC-AUC Curve:** To assess classification capability at different thresholds.
+  * **Classification Report:** Precision, Recall, and F1-Score.
+  * **Model Comparison Table:** A final summary comparing ML vs. DL performance.
+
+All artifacts are saved automatically to the `results/` directory.
