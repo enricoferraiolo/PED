@@ -4,7 +4,7 @@ __pycache__
 # My data
 data/
 weights/
-results/
+results/*.pth
 emails/
 
 # Latex
