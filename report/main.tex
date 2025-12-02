@@ -56,17 +56,17 @@ This project addresses the phishing detection challenge through a dual-pronged a
 The framework implements six distinct classification models across two categories:
 \begin{itemize}
     \item \textbf{Machine Learning}
-    \begin{itemize}
-        \item Logistic Regression
-        \item Random Forest
-        \item XGBoost
-    \end{itemize}
+          \begin{itemize}
+              \item Logistic Regression
+              \item Random Forest
+              \item XGBoost
+          \end{itemize}
     \item \textbf{Deep Learning}
-    \begin{itemize}
-    \item LSTM (Long Short-Term Memory) Neural Network
-    \item CNN (Convolutional Neural Network)
-    \item TabTransformer (Tabular Transformer Model) \cite{huang2020tabtransformertabulardatamodeling}
-    \end{itemize}
+          \begin{itemize}
+              \item LSTM (Long Short-Term Memory) Neural Network
+              \item CNN (Convolutional Neural Network)
+              \item TabTransformer (Tabular Transformer Model) \cite{huang2020tabtransformertabulardatamodeling}
+          \end{itemize}
 \end{itemize}
 
 This comparative analysis provides insights into the strengths, weaknesses, and practical deployment considerations of each approach, particularly under adversarial conditions.
@@ -79,14 +79,14 @@ The primary objective of this project is to develop a robust, multi-model framew
 
 \begin{enumerate}
     \item \textbf{Achieve High Detection Accuracy}: Develop models capable of distinguishing phishing emails from legitimate communications with high precision and recall, minimizing both false positives (legitimate emails flagged as phishing) and false negatives (phishing emails that evade detection).
-    
+
     \item \textbf{Compare Multiple Approaches}: Systematically evaluate and compare the performance of traditional ML algorithms against modern DL architectures to identify the most effective techniques for this specific cybersecurity application.
-    \begin{itemize}
-        \item Assess the performance trade-offs between model complexity, training time, and detection accuracy.
-    \end{itemize}
-    
+          \begin{itemize}
+              \item Assess the performance trade-offs between model complexity, training time, and detection accuracy.
+          \end{itemize}
+
     \item \textbf{Feature Engineering}: Extract and leverage multiple informative features from email content, including linguistic patterns, structural characteristics to enhance detection capabilities.
-    
+
     \item \textbf{Scalability and Efficiency}: Design models that can process large volumes of emails efficiently while maintaining detection accuracy, crucial for real-world deployment in organizational email systems.
 \end{enumerate}
 
@@ -105,11 +105,11 @@ The adversarial evaluation objectives include:
 
 \begin{enumerate}
     \item \textbf{Poisoning Attack Implementation}: Develop a targeted data poisoning strategy that systematically mislabels legitimate emails containing specific keywords as phishing emails, simulating an intelligent adversary.
-    
+
     \item \textbf{Robustness Assessment}: Quantify the degradation in model performance (accuracy, precision, recall, F1-score) when trained on poisoned data compared to clean data.
-    
+
     \item \textbf{Model Comparison}: Identify which model architectures demonstrate greater resilience to adversarial data poisoning.
-    
+
     \item \textbf{Security Implications}: Provide insights into the practical security considerations for deploying ML-based phishing detectors in adversarial environments.
 \end{enumerate}
 
@@ -127,11 +127,11 @@ This dataset provides a comprehensive collection of labeled phishing emails alon
 
 \begin{itemize}
     \item \textbf{Size}: 18,650 total emails initially
-    \item \textbf{Composition}: 
-    \begin{itemize}
-        \item Safe Emails: 11,322 samples
-        \item Phishing Emails: 7,328 samples
-    \end{itemize}
+    \item \textbf{Composition}:
+          \begin{itemize}
+              \item Safe Emails: 11,322 samples
+              \item Phishing Emails: 7,328 samples
+          \end{itemize}
     \item \textbf{Content}: Diverse phishing tactics i.e. financial scams, fake account verification requests, lottery frauds, and credential harvesting attempts
     \item \textbf{After preprocessing}: 18,612 emails (38 removed due to insufficient content)
 \end{itemize}
@@ -156,13 +156,13 @@ To ensure a balanced and realistic representation of legitimate emails, the proj
     \item \textbf{Sampled}: 10,000 emails randomly selected for computational efficiency
     \item \textbf{After preprocessing}: 9,996 legitimate emails
     \item \textbf{Characteristics}: Real-world corporate communications including:
-    \begin{itemize}
-        \item Internal business correspondence
-        \item Meeting scheduling and coordination
-        \item Project discussions
-        \item Policy announcements
-        \item Personal communications
-    \end{itemize}
+          \begin{itemize}
+              \item Internal business correspondence
+              \item Meeting scheduling and coordination
+              \item Project discussions
+              \item Policy announcements
+              \item Personal communications
+          \end{itemize}
 \end{itemize}
 
 The Enron dataset is particularly valuable because it represents genuine, unfiltered business email communications, providing a realistic baseline of legitimate email patterns that a deployed system would encounter.
@@ -189,11 +189,11 @@ The raw email text undergoes several cleaning transformations:
 
 \begin{enumerate}
     \item \textbf{Email Parsing}: Raw email messages containing headers (From, To, Subject, etc.) are parsed to extract the body content using Python's email parsing library.
-    
+
     \item \textbf{HTML Removal}: Many emails contain HTML formatting. BeautifulSoup is employed to strip HTML tags and extract plain text content.
-    
+
     \item \textbf{Whitespace Normalization}: Multiple consecutive spaces, tabs, and newlines are collapsed into single spaces to standardize text representation.
-    
+
     \item \textbf{Minimum Length Filtering}: Emails with fewer than 2 words are removed as they provide insufficient information for classification (38 phishing emails and 4 Enron emails removed).
 \end{enumerate}
 
@@ -205,23 +205,23 @@ Beyond raw text, the framework extracts eight engineered features that capture i
 
 \begin{enumerate}
     \item \textbf{num\_words}: Total word count in the email body
-    \begin{itemize}
-        \item Legitimate mean: 327 words
-        \item Phishing mean: 306 words
-    \end{itemize}
-    
+          \begin{itemize}
+              \item Legitimate mean: 327 words
+              \item Phishing mean: 306 words
+          \end{itemize}
+
     \item \textbf{num\_unique\_words}: Count of distinct words, indicating vocabulary richness
-    \begin{itemize}
-        \item Legitimate mean: 150 unique words
-        \item Phishing mean: 141 unique words
-    \end{itemize}
-    
+          \begin{itemize}
+              \item Legitimate mean: 150 unique words
+              \item Phishing mean: 141 unique words
+          \end{itemize}
+
     \item \textbf{num\_stopwords}: Frequency of common English stopwords (the, is, at, etc.)
-    \begin{itemize}
-        \item Legitimate mean: 100 stopwords
-        \item Phishing mean: 90 stopwords
-        \item Helps identify natural vs. artificially constructed text
-    \end{itemize}
+          \begin{itemize}
+              \item Legitimate mean: 100 stopwords
+              \item Phishing mean: 90 stopwords
+              \item Helps identify natural vs. artificially constructed text
+          \end{itemize}
 \end{enumerate}
 
 \subsubsection{Structural Features}
@@ -229,41 +229,41 @@ Beyond raw text, the framework extracts eight engineered features that capture i
 \begin{enumerate}
     \setcounter{enumi}{3}
     \item \textbf{num\_links}: Count of URLs in the email
-    \begin{itemize}
-        \item Legitimate mean: 0.84 links
-        \item Phishing mean: 0.28 links
-        \item Surprisingly, legitimate business emails often contain more links
-    \end{itemize}
-    
+          \begin{itemize}
+              \item Legitimate mean: 0.84 links
+              \item Phishing mean: 0.28 links
+              \item Surprisingly, legitimate business emails often contain more links
+          \end{itemize}
+
     \item \textbf{num\_unique\_domains}: Number of distinct domain names in URLs
-    \begin{itemize}
-        \item Legitimate mean: 0.54 domains
-        \item Phishing mean: 0.20 domains
-    \end{itemize}
-    
+          \begin{itemize}
+              \item Legitimate mean: 0.54 domains
+              \item Phishing mean: 0.20 domains
+          \end{itemize}
+
     \item \textbf{num\_email\_addresses}: Count of email addresses mentioned in the body
-    \begin{itemize}
-        \item Legitimate mean: 1.12 addresses
-        \item Phishing mean: 0.16 addresses
-    \end{itemize}
+          \begin{itemize}
+              \item Legitimate mean: 1.12 addresses
+              \item Phishing mean: 0.16 addresses
+          \end{itemize}
 \end{enumerate}
 
 \begin{enumerate}
     \setcounter{enumi}{6}
     \item \textbf{num\_spelling\_errors}: Count of misspelled words detected by PySpellChecker
-    \begin{itemize}
-        \item Legitimate mean: 5.58 errors
-        \item Phishing mean: 6.83 errors
-        \item Limited to first 100 words for computational efficiency
-    \end{itemize}
-    
+          \begin{itemize}
+              \item Legitimate mean: 5.58 errors
+              \item Phishing mean: 6.83 errors
+              \item Limited to first 100 words for computational efficiency
+          \end{itemize}
+
     \item \textbf{num\_urgent\_keywords}: Frequency of urgency-inducing phrases
-    \begin{itemize}
-        \item Keywords: "urgent", "immediately", "verify", "suspended", "click here", etc.
-        \item Legitimate mean: 0.53 keywords
-        \item Phishing mean: 0.79 keywords
-        \item Higher prevalence in phishing emails as expected
-    \end{itemize}
+          \begin{itemize}
+              \item Keywords: "urgent", "immediately", "verify", "suspended", "click here", etc.
+              \item Legitimate mean: 0.53 keywords
+              \item Phishing mean: 0.79 keywords
+              \item Higher prevalence in phishing emails as expected
+          \end{itemize}
 \end{enumerate}
 
 \subsection{Feature Analysis Insights}
@@ -272,11 +272,11 @@ Statistical analysis reveals several interesting patterns:
 
 \begin{itemize}
     \item \textbf{Length Similarity}: Both legitimate and phishing emails have comparable average lengths, suggesting length alone is not a strong discriminator.
-    
+
     \item \textbf{Link Paradox}: Legitimate emails actually contain \textit{more} URLs on average than phishing emails in this dataset, likely because the Enron corpus contains substantial intra-company communications with document links and meeting invitations.
-    
+
     \item \textbf{Spelling Quality}: The difference in spelling errors is modest, as modern phishing campaigns often employ professional copywriting to avoid detection.
-    
+
     \item \textbf{Urgency Language}: As hypothesized, phishing emails employ urgency keywords more frequently (0.79 vs 0.53), though the difference is less pronounced than commonly assumed.
 \end{itemize}
 
@@ -377,22 +377,22 @@ All DL models share a common text processing pipeline:
 \textbf{Architecture}: Novel hybrid approach combining text and tabular features
 \begin{itemize}
     \item Text branch:
-    \begin{itemize}
-        \item Embedding: 10,000 vocab $\times$ 128 dimensions
-        \item Average pooling over sequence
-        \item Linear projection to 128-dimensional token
-    \end{itemize}
+          \begin{itemize}
+              \item Embedding: 10,000 vocab $\times$ 128 dimensions
+              \item Average pooling over sequence
+              \item Linear projection to 128-dimensional token
+          \end{itemize}
     \item Tabular branch:
-    \begin{itemize}
-        \item 8 engineered features
-        \item Each feature projected to 128-dimensional token
-    \end{itemize}
+          \begin{itemize}
+              \item 8 engineered features
+              \item Each feature projected to 128-dimensional token
+          \end{itemize}
     \item Transformer encoder:
-    \begin{itemize}
-        \item 2 layers, 4 attention heads
-        \item Feed-forward dimension: 256
-        \item Processes 9 tokens total (1 text + 8 feature tokens)
-    \end{itemize}
+          \begin{itemize}
+              \item 2 layers, 4 attention heads
+              \item Feed-forward dimension: 256
+              \item Processes 9 tokens total (1 text + 8 feature tokens)
+          \end{itemize}
     \item Classification head: Multi-layer perceptron
     \item Dropout: 0.3
 \end{itemize}
@@ -438,11 +438,11 @@ Each model underwent systematic training with the following procedure:
 
 \begin{enumerate}
     \item \textbf{Initialization}: Random seeds set to 42 for reproducibility
-    \item \textbf{Training}: 
-    \begin{itemize}
-        \item ML models: Single-pass training on full training set
-        \item DL models: Iterative mini-batch gradient descent
-    \end{itemize}
+    \item \textbf{Training}:
+          \begin{itemize}
+              \item ML models: Single-pass training on full training set
+              \item DL models: Iterative mini-batch gradient descent
+          \end{itemize}
     \item \textbf{Validation} (DL only): After each epoch, evaluate on validation set
     \item \textbf{Early Stopping} (DL only): Stop if validation loss doesn't improve for 5 consecutive epochs
     \item \textbf{Model Selection}: Save best model based on validation performance
@@ -463,7 +463,7 @@ All models were successfully trained on the clean dataset using the specified tr
     % Logistic Regression (Left)
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{media/clean_logistic_regression_evaluation.png} 
+        \includegraphics[width=\textwidth]{media/clean_logistic_regression_evaluation.png}
         \caption{Training Results - Logistic Regression}
         \label{fig:training_res_lr}
     \end{subfigure}
@@ -496,7 +496,7 @@ All models were successfully trained on the clean dataset using the specified tr
     \end{subfigure}
 
     \vspace{1em} % Vertical space between Row 2 and Row 3
-    
+
     % --- ROW 3 ---
     % CNN (Left)
     \begin{subfigure}[b]{0.48\textwidth}
@@ -533,23 +533,23 @@ For cybersecurity applications, multiple evaluation metrics are essential:
 \subsection{Performance Comparison}
 
 \begin{table}[H]
-\centering
-\caption{Model Performance on Clean Test Set}
-\begin{tabular}{lcccccc}
-\toprule
-\textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} & \textbf{ROC-AUC} \\
-\midrule
-\multicolumn{6}{l}{\textit{Machine Learning Models}} \\
-Logistic Regression & 0.750 & 0.535 & 0.043 & 0.079 & 0.670 \\
-Random Forest & 0.829 & 0.731 & 0.507 & 0.599 & 0.850 \\
-XGBoost & 0.800 & 0.693 & 0.369 & 0.481 & 0.824 \\
-\midrule
-\multicolumn{6}{l}{\textit{Deep Learning Models}} \\
-LSTM & 0.966 & 0.932 &  \textbf{0.932} & 0.932 & 0.992 \\
-CNN & \textbf{0.969} & 0.945 & 0.931 & \textbf{0.938} & \textbf{0.995} \\
-TabTransformer & 0.962 & \textbf{0.959} & 0.888 & 0.922 & 0.993 \\
-\bottomrule
-\end{tabular}
+    \centering
+    \caption{Model Performance on Clean Test Set}
+    \begin{tabular}{lcccccc}
+        \toprule
+        \textbf{Model}      & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1}    & \textbf{ROC-AUC} \\
+        \midrule
+        \multicolumn{6}{l}{\textit{Machine Learning Models}}                                                               \\
+        Logistic Regression & 0.750             & 0.535              & 0.043           & 0.079          & 0.670            \\
+        Random Forest       & 0.829             & 0.731              & 0.507           & 0.599          & 0.850            \\
+        XGBoost             & 0.800             & 0.693              & 0.369           & 0.481          & 0.824            \\
+        \midrule
+        \multicolumn{6}{l}{\textit{Deep Learning Models}}                                                                  \\
+        LSTM                & 0.966             & 0.932              & \textbf{0.932}  & 0.932          & 0.992            \\
+        CNN                 & \textbf{0.969}    & 0.945              & 0.931           & \textbf{0.938} & \textbf{0.995}   \\
+        TabTransformer      & 0.962             & \textbf{0.959}     & 0.888           & 0.922          & 0.993            \\
+        \bottomrule
+    \end{tabular}
 \end{table}
 
 \begin{figure}[H]
@@ -630,11 +630,11 @@ All DL models dramatically outperform ML approaches, demonstrating the value of 
 
 \begin{enumerate}
     \item \textbf{DL Superiority}: Deep learning models achieve higher accuracy than ML models, demonstrating the importance of learning representations from raw text.
-    
+
     \item \textbf{CNN Efficiency}: The CNN model achieves the best overall performance while being computationally more efficient than the LSTM, making it ideal for deployment.
-    
+
     \item \textbf{Feature Engineering Limitations}: While engineered features capture important patterns, they cannot match the discriminative power of learned embeddings and sequential modeling.
-    
+
     \item \textbf{Robustness Needed}: With near-perfect performance on clean data, the critical question becomes: How do these models perform under adversarial conditions?
 \end{enumerate}
 
@@ -648,14 +648,14 @@ Data poisoning represents a realistic threat to ML-based security systems. This 
 
 \begin{enumerate}
     \item \textbf{Target Identification}: Select common words that appear frequently in legitimate business emails but could also appear in phishing emails:
-    \begin{itemize}
-        \item Keywords: "please", "information", "money", "business", "time", "report", "click"
-    \end{itemize}
-    
+          \begin{itemize}
+              \item Keywords: "please", "information", "money", "business", "time", "report", "click"
+          \end{itemize}
+
     \item \textbf{Poisoning Strategy}: Systematically relabel legitimate emails (label 0) containing these keywords as phishing emails (label 1)
-    
+
     \item \textbf{Poisoning Rate}: 20\% of emails matching the keyword criteria are poisoned
-    
+
     \item \textbf{Result}: 2,758 emails mislabeled (approximately 9.7\% of the total dataset)
 \end{enumerate}
 
@@ -683,21 +683,21 @@ The poisoned dataset \texttt{emails\_combined\_poisoned.csv} is used to retrain 
 \subsection{Results on Poisoned Data}
 
 \begin{table}[H]
-\centering
-\caption{Model Performance Comparison: Clean vs. Poisoned Data -  Shortened}
-\begin{tabular}{lcccc}
-\toprule
-\textbf{Model} & \multicolumn{2}{c}{\textbf{Accuracy}} & \multicolumn{2}{c}{\textbf{Precision}}\\
-& Clean & Poisoned & Clean & Poisoned \\
-\midrule
-Logistic Regression & 0.750 & 0.652 & 0.535 & 0.517 \\
-Random Forest & 0.829 & 0.730 & 0.731 & 0.671 \\
-XGBoost & 0.800 & 0.713 & 0.693 & 0.664 \\
-LSTM & 0.966 & 0.863 & 0.932 & 0.898 \\
-CNN & \textbf{0.969} & 0.869 & 0.945 & \textbf{0.929} \\
-TabTransformer & 0.962 & \textbf{0.873} & \textbf{0.959} & 0.925 \\
-\bottomrule
-\end{tabular}
+    \centering
+    \caption{Model Performance Comparison: Clean vs. Poisoned Data -  Shortened}
+    \begin{tabular}{lcccc}
+        \toprule
+        \textbf{Model}      & \multicolumn{2}{c}{\textbf{Accuracy}} & \multicolumn{2}{c}{\textbf{Precision}}                                   \\
+                            & Clean                                 & Poisoned                               & Clean          & Poisoned       \\
+        \midrule
+        Logistic Regression & 0.750                                 & 0.652                                  & 0.535          & 0.517          \\
+        Random Forest       & 0.829                                 & 0.730                                  & 0.731          & 0.671          \\
+        XGBoost             & 0.800                                 & 0.713                                  & 0.693          & 0.664          \\
+        LSTM                & 0.966                                 & 0.863                                  & 0.932          & 0.898          \\
+        CNN                 & \textbf{0.969}                        & 0.869                                  & 0.945          & \textbf{0.929} \\
+        TabTransformer      & 0.962                                 & \textbf{0.873}                         & \textbf{0.959} & 0.925          \\
+        \bottomrule
+    \end{tabular}
 \end{table}
 
 \begin{figure}[H]
@@ -725,10 +725,10 @@ As anticipated, all models exhibit performance degradation when trained on poiso
 
 LSTM, CNN, TabTransformer, which achieved near-perfect accuracy ($>$96\%) on clean data, experienced an average accuracy drop of approximately 10 percentage points, falling to the 86-87\% range, recall suffered similarly.
 
-\begin{itemize} 
-\item \textbf{CNN}: Recall dropped from \textbf{93.1\%} to \textbf{67.8\%} (a 27.2\% reduction). 
-\item \textbf{LSTM}: Recall dropped from \textbf{93.2\%} to \textbf{68.6\%} (a 26.4\% reduction). 
-\item \textbf{TabTransformer}: Recall dropped from \textbf{88.8\%} to \textbf{69.2\%} (a 22.1\% reduction). 
+\begin{itemize}
+    \item \textbf{CNN}: Recall dropped from \textbf{93.1\%} to \textbf{67.8\%} (a 27.2\% reduction).
+    \item \textbf{LSTM}: Recall dropped from \textbf{93.2\%} to \textbf{68.6\%} (a 26.4\% reduction).
+    \item \textbf{TabTransformer}: Recall dropped from \textbf{88.8\%} to \textbf{69.2\%} (a 22.1\% reduction).
 \end{itemize}
 
 Following are the per-model training results on poisoned data:
@@ -739,7 +739,7 @@ Following are the per-model training results on poisoned data:
     % Logistic Regression (Left)
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{media/poisoned_logistic_regression_evaluation.png} 
+        \includegraphics[width=\textwidth]{media/poisoned_logistic_regression_evaluation.png}
         \caption{Poisoned Training Results - Logistic Regression}
         \label{fig:training_res_lr_poisoned}
     \end{subfigure}
@@ -770,7 +770,7 @@ Following are the per-model training results on poisoned data:
         \caption{Poisoned Training Results - LSTM}
         \label{fig:training_res_lstm_poisoned}
     \end{subfigure}
-    
+
     \vspace{1em} % Vertical space between Row 2 and Row 3
 
     % --- ROW 3 ---
@@ -800,11 +800,11 @@ Several defense mechanisms could improve robustness:
 
 \begin{enumerate}
     \item \textbf{Data Sanitization}:
-    \begin{itemize}
-        \item Outlier detection to identify suspiciously labeled samples
-        \item Confidence-based filtering during training
-        \item Multiple independent labeling sources with consensus requirements
-    \end{itemize}
+          \begin{itemize}
+              \item Outlier detection to identify suspiciously labeled samples
+              \item Confidence-based filtering during training
+              \item Multiple independent labeling sources with consensus requirements
+          \end{itemize}
 \end{enumerate}
 
 \subsubsection{Practical Implications}
@@ -813,11 +813,11 @@ The adversarial evaluation highlights critical considerations for deploying AI-b
 
 \begin{itemize}
     \item \textbf{Trust in Training Data}: Organizations must carefully validate their training data sources and implement safeguards against corruption.
-    
+
     \item \textbf{Defense in Depth}: No single model is perfectly robust. Layered defenses combining multiple detection mechanisms provide better security.
-    
+
     \item \textbf{Human Oversight}: Automated systems should incorporate human review for borderline cases, especially for emails from trusted contacts.
-    
+
 \end{itemize}
 
 \section{Conclusion}
@@ -828,11 +828,11 @@ This project developed and evaluated a comprehensive framework for phishing emai
 
 \begin{enumerate}
     \item \textbf{High-Performance Detection}: The CNN model achieved 96.9\% accuracy with 94.5\% precision and 93.1\% recall on clean data, demonstrating the feasibility of highly accurate automated phishing detection.
-    
+
     \item \textbf{Comprehensive Comparison}: By evaluating six distinct models, the project identified that Deep Learning approaches substantially outperform traditional ML methods for this task.
-    
+
     \item \textbf{Feature Engineering}: Extracted and analyzed eight informative features from email content, providing insights into the characteristics that distinguish phishing from legitimate emails.
-    
+
     \item \textbf{Adversarial Evaluation}: Implemented a realistic data poisoning attack targeting common business terminology, providing a framework for assessing model robustness under adversarial conditions.
 \end{enumerate}
 
@@ -842,11 +842,11 @@ From a cybersecurity perspective, this work contributes:
 
 \begin{itemize}
     \item \textbf{Practical Defense Mechanism}: Provides a deployable solution for email filtering systems with multiple model options suitable for different computational budgets and accuracy requirements.
-    
+
     \item \textbf{Robustness Assessment}: Highlights the importance of evaluating ML security systems not only for accuracy but also for resilience against adversarial manipulation.
-    
+
     \item \textbf{Architectural Insights}: Demonstrates that CNNs offer an excellent balance of accuracy, efficiency, and (potentially) robustness for text-based security applications.
-    
+
     \item \textbf{Security-Aware Design}: Emphasizes the necessity of incorporating adversarial considerations into ML system design from the outset rather than as an afterthought.
 \end{itemize}
 
@@ -856,7 +856,7 @@ Several limitations and opportunities for future investigation exist:
 
 \begin{enumerate}
     \item \textbf{Single Poisoning Strategy}: Only one poisoning approach was evaluated. Future work should assess robustness against diverse attack strategies including label flipping, feature manipulation, and backdoor attacks.
-    
+
     \item \textbf{Multi-modal Detection}: This project focused on email body text. Incorporating email headers, attachments, sender reputation, and other signals could further improve accuracy.
 \end{enumerate}
 
