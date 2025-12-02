@@ -320,7 +320,7 @@ DL models directly process the text sequences, learning representations from raw
 All DL models share a common text processing pipeline:
 \begin{itemize}
     \item \textbf{Vocabulary Size}: 10,000 most frequent tokens
-    \item \textbf{Special Tokens}: <PAD> (padding), <UNK> (unknown)
+    \item \textbf{Special Tokens}: \texttt{<PAD>} (padding), \texttt{<UNK>} (unknown)
     \item \textbf{Maximum Sequence Length}: 200 tokens
     \item \textbf{Tokenization}: Simple word-level tokenization with regex
 \end{itemize}
@@ -441,6 +441,71 @@ Each model underwent systematic training with the following procedure:
 
 This section presents a comprehensive evaluation of all six models on the clean (non-poisoned) test dataset.
 
+\subsection{Per Model Training}
+All models were successfully trained on the clean dataset using the specified training pipeline. Following are the results obtained on the held-out test set.
+
+\begin{figure}[htbp]
+    \centering
+
+    % --- ROW 1 ---
+    % Subfigure 1 (Top Left)
+    % [b] aligns subfigures by their bottom baseline so captions line up
+    % {0.3\textwidth} sets width to 30% of the page text width
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        % Use width=\textwidth so the image fills its container (the 0.3 set above)
+        \includegraphics[width=\textwidth]{media/clean_logistic_regression_evaluation.png} 
+        \caption{Training Results - Logistic Regression}
+        \label{fig:training_res_lr}
+    \end{subfigure}
+    \hfill % Adds spring-like space between subfigures
+    % Subfigure 2 (Top Middle)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{media/clean_random_forest_evaluation.png}
+        \caption{Training Results - Random Forest}
+        \label{fig:training_res_rf}
+    \end{subfigure}
+    \hfill
+    % Subfigure 3 (Top Right)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{media/clean_xgboost_evaluation.png}
+        \caption{Training Results - XGBoost}
+        \label{fig:training_res_xgb}
+    \end{subfigure}
+
+    % leave a blank line to force a new row break
+    \vspace{1em} % Optional: adds vertical space between rows
+
+    % --- ROW 2 ---
+    % Subfigure 4 (Bottom Left)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{media/clean_lstm_evaluation.png}
+        \caption{Training Results - LSTM}
+        \label{fig:training_res_lstm}
+    \end{subfigure}
+    \hfill
+    % Subfigure 5 (Bottom Middle)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{media/clean_cnn_evaluation.png}
+        \caption{Training Results - CNN}
+        \label{fig:training_res_cnn}
+    \end{subfigure}
+    \hfill
+    % Subfigure 6 (Bottom Right)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{media/clean_tabtransformer_evaluation.png}
+        \caption{Training Results - TabTransformer}
+        \label{fig:training_res_tabtransformer}
+    \end{subfigure}
+
+    \caption{Training and Validation Curves for All Deep Learning Models on Clean Data. Each subfigure (\ref{fig:training_res_lr}-\ref{fig:training_res_tabtransformer}) displays confunsion matrix (on the left side) and the ROC curve on the right panel for the respective model.}
+    \label{fig:training_results_clean}
+\end{figure}
 \subsection{Metrics Selection}
 
 For cybersecurity applications, multiple evaluation metrics are essential:
@@ -639,13 +704,13 @@ TabTransformer & 0.962 & \textbf{0.873} & \textbf{0.959} & 0.925 \\
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
-        \includegraphics[width=0.8\textwidth]{media/poison_metrics_comparison.png}
+        \includegraphics[width=0.8\textwidth]{media/poisoned_metrics_comparison.png}
         \caption{Visual Comparison of Model Performance on Poisoned Test Set}
         \label{fig:poison_metrics}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.48\textwidth}
-        \includegraphics[width=0.8\textwidth]{media/poison_roc_curves_all_models.png}
+        \includegraphics[width=0.8\textwidth]{media/poisoned_roc_curves_all_models.png}
         \caption{ROC Curves for All Models on Poisoned Test Set}
         \label{fig:poison_roc}
     \end{subfigure}
@@ -665,6 +730,71 @@ As we anticipated, all models exhibit performance degradation when trained on po
     \item \textbf{F1-Score Reduction}: F1-scores decrease across the board, reflecting the combined impact on precision and recall.
     \item \textbf{ROC-AUC Reduction}: All models show decreased ROC-AUC scores, indicating a general decline in discriminative ability.
 \end{itemize}
+
+Following are the per-model training results on poisoned data:
+\begin{figure}[H]
+    \centering
+
+    % --- ROW 1 ---
+    % Subfigure 1 (Top Left)
+    % [b] aligns subfigures by their bottom baseline so captions line up
+    % {0.3\textwidth} sets width to 30% of the page text width
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        % Use width=\textwidth so the image fills its container (the 0.3 set above)
+        \includegraphics[width=\textwidth]{media/poisoned_logistic_regression_evaluation.png} 
+        \caption{Poisoned Training Results - Logistic Regression}
+        \label{fig:training_res_lr_poisoned}
+    \end{subfigure}
+    \hfill % Adds spring-like space between subfigures
+    % Subfigure 2 (Top Middle)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{media/poisoned_random_forest_evaluation.png}
+        \caption{Poisoned Training Results - Random Forest}
+        \label{fig:training_res_rf_poisoned}
+    \end{subfigure}
+    \hfill
+    % Subfigure 3 (Top Right)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{media/poisoned_xgboost_evaluation.png}
+        \caption{Poisoned Training Results - XGBoost}
+        \label{fig:training_res_xgb_poisoned}
+    \end{subfigure}
+
+    % leave a blank line to force a new row break
+    \vspace{1em} % Optional: adds vertical space between rows
+
+    % --- ROW 2 ---
+    % Subfigure 4 (Bottom Left)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{media/poisoned_lstm_evaluation.png}
+        \caption{Poisoned Training Results - LSTM}
+        \label{fig:training_res_lstm_poisoned}
+    \end{subfigure}
+    \hfill
+    % Subfigure 5 (Bottom Middle)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{media/poisoned_cnn_evaluation.png}
+        \caption{Poisoned Training Results - CNN}
+        \label{fig:training_res_cnn_poisoned}
+    \end{subfigure}
+    \hfill
+    % Subfigure 6 (Bottom Right)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{media/poisoned_tabtransformer_evaluation.png}
+        \caption{Poisoned Training Results - TabTransformer}
+        \label{fig:training_res_tabtransformer_poisoned}
+    \end{subfigure}
+
+    \caption{Training and Validation Curves for All Deep Learning Models on Poisoned Data. Each subfigure (\ref{fig:training_res_lr_poisoned}-\ref{fig:training_res_tabtransformer_poisoned}) displays confunsion matrix (on the left side) and the ROC curve on the right panel for the respective model.}
+    \label{fig:training_results_poisoned}
+\end{figure}
+
 \subsubsection{Mitigation Strategies}
 
 Several defense mechanisms could improve robustness:
