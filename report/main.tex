@@ -609,17 +609,16 @@ The poisoned dataset (emails\_combined\_poisoned.csv) is used to retrain all six
 \textbf{Model} & \multicolumn{2}{c}{\textbf{Accuracy}} & \multicolumn{2}{c}{\textbf{Precision}} \\
 & Clean & Poisoned & Clean & Poisoned \\
 \midrule
-Logistic Regression & 0.750 & - & 0.535 & - \\
-Random Forest & 0.829 & - & 0.731 & - \\
-XGBoost & 0.800 & - & 0.693 & - \\
-LSTM & 0.966 & - & 0.932 & - \\
-CNN & 0.969 & - & 0.945 & - \\
-TabTransformer & 0.962 & - & 0.959 & - \\
+Logistic Regression & 0.750 & 0.652 & 0.535 & 0.517 \\
+Random Forest & 0.829 & 0.730 & 0.731 & 0.671 \\
+XGBoost & 0.800 & 0.713 & 0.693 & 0.664 \\
+LSTM & 0.966 & 0.863 & 0.932 & 0.898 \\
+CNN & \textbf{0.969} & 0.869 & 0.945 & \textbf{0.929} \\
+TabTransformer & 0.962 & \textbf{0.873} & \textbf{0.959} & 0.925 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textit{Note: Actual poisoned data results should be inserted here after running training on the poisoned dataset.}
 
 \subsection{Discussion on Adversarial Robustness}
 
