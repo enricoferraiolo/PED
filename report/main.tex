@@ -53,12 +53,20 @@ Traditional rule-based email filtering systems often struggle to keep pace with 
 
 This project addresses the phishing detection challenge through a dual-pronged approach. First, it develops and evaluates a comprehensive framework combining both traditional Machine Learning (ML) and modern Deep Learning (DL) techniques for phishing email classification. Second, and critically important from a cybersecurity perspective, it evaluates the adversarial robustness of these models against data poisoning attacks—a realistic threat scenario where attackers may attempt to compromise the training data to reduce detection efficacy.
 
-The framework implements six distinct classification models across three categories:
+The framework implements six distinct classification models across two categories:
 \begin{itemize}
-    \item \textbf{Traditional ML}: Logistic Regression, Random Forest, and XGBoost
-    \item \textbf{Sequential DL}: LSTM (Long Short-Term Memory) network
-    \item \textbf{Convolutional DL}: CNN (Convolutional Neural Network)
-    \item \textbf{Hybrid Transformer}: TabTransformer combining textual and tabular features
+    \item \textbf{Machine Learning}
+    \begin{itemize}
+        \item Logistic Regression
+        \item Random Forest
+        \item XGBoost
+    \end{itemize}
+    \item \textbf{Deep Learning}
+    \begin{itemize}
+    \item LSTM (Long Short-Term Memory) Neural Network
+    \item CNN (Convolutional Neural Network)
+    \item TabTransformer (Tabular Transformer Model) \cite{huang2020tabtransformertabulardatamodeling}
+    \end{itemize}
 \end{itemize}
 
 This comparative analysis provides insights into the strengths, weaknesses, and practical deployment considerations of each approach, particularly under adversarial conditions.
@@ -73,6 +81,9 @@ The primary objective of this project is to develop a robust, multi-model framew
     \item \textbf{Achieve High Detection Accuracy}: Develop models capable of distinguishing phishing emails from legitimate communications with high precision and recall, minimizing both false positives (legitimate emails flagged as phishing) and false negatives (phishing emails that evade detection).
     
     \item \textbf{Compare Multiple Approaches}: Systematically evaluate and compare the performance of traditional ML algorithms against modern DL architectures to identify the most effective techniques for this specific cybersecurity application.
+    \begin{itemize}
+        \item Assess the performance trade-offs between model complexity, training time, and detection accuracy.
+    \end{itemize}
     
     \item \textbf{Feature Engineering}: Extract and leverage multiple informative features from email content, including linguistic patterns, structural characteristics to enhance detection capabilities.
     
@@ -110,7 +121,7 @@ The effectiveness of any ML or DL system fundamentally depends on the quality an
 
 \subsection{Phishing Email Dataset}
 
-\textbf{Source}: Kaggle - "Phishing Emails" dataset (subhajournal/phishingemails)
+\textbf{Source}: Kaggle - "Phishing Emails" dataset \cite{subhadeep_chakraborty_2023_phishing_email_dataset}.
 
 This dataset provides a comprehensive collection of labeled phishing emails alongside safe emails. The dataset characteristics include:
 
@@ -121,7 +132,7 @@ This dataset provides a comprehensive collection of labeled phishing emails alon
         \item Safe Emails: 11,322 samples
         \item Phishing Emails: 7,328 samples
     \end{itemize}
-    \item \textbf{Content}: Diverse phishing tactics including financial scams, fake account verification requests, lottery frauds, and credential harvesting attempts
+    \item \textbf{Content}: Diverse phishing tactics i.e. financial scams, fake account verification requests, lottery frauds, and credential harvesting attempts
     \item \textbf{After preprocessing}: 18,612 emails (38 removed due to insufficient content)
 \end{itemize}
 
@@ -136,7 +147,7 @@ The phishing samples in this dataset exhibit various attack patterns:
 
 \subsection{Enron Email Dataset}
 
-\textbf{Source}: Kaggle - "Enron Email Dataset" (wcukierski/enron-email-dataset)
+\textbf{Source}: Kaggle - "Enron Email Dataset" \cite{enron_dataset}.
 
 To ensure a balanced and realistic representation of legitimate emails, the project incorporates emails from the famous Enron corpus. This dataset provides:
 
@@ -237,8 +248,6 @@ Beyond raw text, the framework extracts eight engineered features that capture i
     \end{itemize}
 \end{enumerate}
 
-\subsubsection{Quality and Urgency Features}
-
 \begin{enumerate}
     \setcounter{enumi}{6}
     \item \textbf{num\_spelling\_errors}: Count of misspelled words detected by PySpellChecker
@@ -272,10 +281,11 @@ Statistical analysis reveals several interesting patterns:
 \end{itemize}
 
 These insights emphasize the complexity of the phishing detection task and the necessity of sophisticated ML/DL models that can learn non-linear combinations of features rather than relying on simple rules.
+Also, they highlight the importance of using a diverse dataset that captures real-world email characteristics and let us understand the limitations of naive heuristics.
 
 \section{Framework}
 
-The project implements a comprehensive framework encompassing three categories of models, each with distinct architectural characteristics and learning paradigms.
+The project implements a comprehensive framework encompassing two categories of models, each with distinct architectural characteristics and learning paradigms.
 
 \subsection{Machine Learning Models}
 
@@ -410,15 +420,17 @@ All DL models share a common text processing pipeline:
     \item \textbf{Learning rate}: 0.001 (Adam optimizer)
     \item \textbf{Epochs}: Maximum 30 with early stopping
     \item \textbf{Early stopping patience}: 5 epochs
-    \item \textbf{Loss function}: Binary Cross-Entropy
+    \item \textbf{Loss function}: Binary Cross-Entropy, as this is a binary classification task
 \end{itemize}
 
-\subsubsection{Feature Scaling}
+\subsubsection{Feature Scaling and Embeddings}
+For the machine learning models and the TabTransformer, appropriate feature scaling and embedding strategies were applied:
 \begin{itemize}
-    \item ML models: StandardScaler (zero mean, unit variance)
+    \item ML models: StandardScaler
     \item DL models: StandardScaler for tabular features in TabTransformer
-    \item Text embeddings: Learned during training
 \end{itemize}
+This let the models effectively learn from the engineered features.
+During the deep learning training, embeddings were learned from scratch, allowing the models to capture domain-specific semantic relationships in the email text.
 
 \subsection{Training Process}
 
@@ -442,78 +454,78 @@ Each model underwent systematic training with the following procedure:
 This section presents a comprehensive evaluation of all six models on the clean (non-poisoned) test dataset.
 
 \subsection{Per Model Training}
-All models were successfully trained on the clean dataset using the specified training pipeline. Following are the results obtained on the held-out test set.
+All models were successfully trained on the clean dataset using the specified training pipeline. Following are the results obtained on the held-out test set \ref{fig:training_results_clean}.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
 
     % --- ROW 1 ---
-    % Subfigure 1 (Top Left)
-    % [b] aligns subfigures by their bottom baseline so captions line up
-    % {0.3\textwidth} sets width to 30% of the page text width
-    \begin{subfigure}[b]{0.3\textwidth}
+    % Logistic Regression (Left)
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        % Use width=\textwidth so the image fills its container (the 0.3 set above)
         \includegraphics[width=\textwidth]{media/clean_logistic_regression_evaluation.png} 
         \caption{Training Results - Logistic Regression}
         \label{fig:training_res_lr}
     \end{subfigure}
-    \hfill % Adds spring-like space between subfigures
-    % Subfigure 2 (Top Middle)
-    \begin{subfigure}[b]{0.3\textwidth}
+    \hfill % Pushes images to edges
+    % Random Forest (Right)
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{media/clean_random_forest_evaluation.png}
         \caption{Training Results - Random Forest}
         \label{fig:training_res_rf}
     \end{subfigure}
-    \hfill
-    % Subfigure 3 (Top Right)
-    \begin{subfigure}[b]{0.3\textwidth}
+
+    \vspace{1em} % Vertical space between Row 1 and Row 2
+
+    % --- ROW 2 ---
+    % XGBoost (Left)
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{media/clean_xgboost_evaluation.png}
         \caption{Training Results - XGBoost}
         \label{fig:training_res_xgb}
     \end{subfigure}
-
-    % leave a blank line to force a new row break
-    \vspace{1em} % Optional: adds vertical space between rows
-
-    % --- ROW 2 ---
-    % Subfigure 4 (Bottom Left)
-    \begin{subfigure}[b]{0.3\textwidth}
+    \hfill
+    % LSTM (Right)
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{media/clean_lstm_evaluation.png}
         \caption{Training Results - LSTM}
         \label{fig:training_res_lstm}
     \end{subfigure}
-    \hfill
-    % Subfigure 5 (Bottom Middle)
-    \begin{subfigure}[b]{0.3\textwidth}
+
+    \vspace{1em} % Vertical space between Row 2 and Row 3
+    
+    % --- ROW 3 ---
+    % CNN (Left)
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{media/clean_cnn_evaluation.png}
         \caption{Training Results - CNN}
         \label{fig:training_res_cnn}
     \end{subfigure}
     \hfill
-    % Subfigure 6 (Bottom Right)
-    \begin{subfigure}[b]{0.3\textwidth}
+    % TabTransformer (Right)
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{media/clean_tabtransformer_evaluation.png}
         \caption{Training Results - TabTransformer}
         \label{fig:training_res_tabtransformer}
     \end{subfigure}
 
-    \caption{Training and Validation Curves for All Deep Learning Models on Clean Data. Each subfigure (\ref{fig:training_res_lr}-\ref{fig:training_res_tabtransformer}) displays confunsion matrix (on the left side) and the ROC curve on the right panel for the respective model.}
+    \caption{Training and Validation Curves for All Models on Clean Data. Each subfigure (\ref{fig:training_res_lr}-\ref{fig:training_res_tabtransformer}) displays the confusion matrix (left) and the ROC curve (right) for the respective model.}
     \label{fig:training_results_clean}
 \end{figure}
+
 \subsection{Metrics Selection}
 
 For cybersecurity applications, multiple evaluation metrics are essential:
 
 \begin{itemize}
-    \item \textbf{Accuracy}: Overall correctness, important but insufficient alone
-    \item \textbf{Precision}: $\frac{TP}{TP + FP}$ - Critical for minimizing false positives (legitimate emails marked as phishing)
-    \item \textbf{Recall (Sensitivity)}: $\frac{TP}{TP + FN}$ - Critical for catching actual phishing emails
+    \item \textbf{Accuracy}: Overall correctness, important but insufficient alone (overall, how often is the model correct?)
+    \item \textbf{Precision}: $\frac{TP}{TP + FP}$ - Critical for minimizing false positives (legitimate emails marked as phishing, when the model claims it's phishing, how often is it right?)
+    \item \textbf{Recall}: $\frac{TP}{TP + FN}$ - Critical for catching actual phishing emails (out of all the actual phishing emails, how many did we find?)
     \item \textbf{F1-Score}: Harmonic mean of precision and recall, balances both concerns
     \item \textbf{ROC-AUC}: Area under ROC curve, measures model's ability to discriminate between classes across all thresholds
 \end{itemize}
@@ -582,7 +594,6 @@ TabTransformer & 0.962 & \textbf{0.959} & 0.888 & 0.922 & 0.993 \\
     \item Moderate performance (80.0\% accuracy)
     \item Lower recall (36.9\%) than Random Forest
     \item Strong ROC-AUC (0.824) suggests good probability estimates
-    \item May be suffering from insufficient hyperparameter tuning
 \end{itemize}
 
 \subsubsection{Deep Learning Models}
@@ -592,7 +603,7 @@ All DL models dramatically outperform ML approaches, demonstrating the value of 
 \textbf{LSTM}:
 \begin{itemize}
     \item Excellent performance: 96.6\% accuracy
-    \item Perfect balance: 93.2\% precision and recall
+    \item Good balance: 93.2\% precision and recall
     \item ROC-AUC of 0.992 indicates near-perfect discrimination
     \item Successfully captures sequential dependencies in email text
 \end{itemize}
@@ -618,13 +629,11 @@ All DL models dramatically outperform ML approaches, demonstrating the value of 
 \subsection{Key Findings}
 
 \begin{enumerate}
-    \item \textbf{DL Superiority}: Deep learning models achieve 13-22\% higher accuracy than ML models, demonstrating the importance of learning representations from raw text.
+    \item \textbf{DL Superiority}: Deep learning models achieve higher accuracy than ML models, demonstrating the importance of learning representations from raw text.
     
     \item \textbf{CNN Efficiency}: The CNN model achieves the best overall performance while being computationally more efficient than the LSTM, making it ideal for deployment.
     
     \item \textbf{Feature Engineering Limitations}: While engineered features capture important patterns, they cannot match the discriminative power of learned embeddings and sequential modeling.
-    
-    \item \textbf{Precision-Recall Tradeoff}: The TabTransformer prioritizes precision (fewer false positives) at a slight cost to recall, which may be desirable in some deployment scenarios where user experience is critical.
     
     \item \textbf{Robustness Needed}: With near-perfect performance on clean data, the critical question becomes: How do these models perform under adversarial conditions?
 \end{enumerate}
@@ -660,32 +669,22 @@ This attack simulates an adversary who:
     \item Uses keywords like "click" that might legitimately appear in business emails containing hyperlinks
 \end{itemize}
 
-The attack is sophisticated because:
+The attack:
 \begin{itemize}
     \item It targets ambiguous cases where both classes might naturally use similar language
     \item The poisoning rate (20\%) is substantial but not obvious enough to trigger manual review
     \item Words like "information", "business", and "report" are extremely common in corporate communications
 \end{itemize}
 
-\subsection{Expected Impact}
-
-Theoretically, this poisoning strategy should:
-\begin{enumerate}
-    \item \textbf{Increase False Positives}: Models learn to associate common business terms with phishing
-    \item \textbf{Reduce Precision}: More legitimate emails will be incorrectly classified as phishing
-    \item \textbf{Maintain Recall}: Detection of actual phishing emails should remain relatively stable
-    \item \textbf{Degrade User Trust}: Increased false positives may cause users to ignore warnings
-\end{enumerate}
-
 \subsection{Training on Poisoned Data}
 
-The poisoned dataset (emails\_combined\_poisoned.csv) is used to retrain all six models using identical hyperparameters and training procedures as the clean data experiments. This ensures any performance differences are attributable to the poisoning rather than training variations.
+The poisoned dataset \texttt{emails\_combined\_poisoned.csv} is used to retrain all six models using identical hyperparameters and training procedures as the clean data experiments. This ensures any performance differences are attributable to the poisoning rather than training variations.
 
 \subsection{Results on Poisoned Data}
 
 \begin{table}[H]
 \centering
-\caption{Model Performance Comparison: Clean vs. Poisoned Data}
+\caption{Model Performance Comparison: Clean vs. Poisoned Data -  Shortened}
 \begin{tabular}{lcccc}
 \toprule
 \textbf{Model} & \multicolumn{2}{c}{\textbf{Accuracy}} & \multicolumn{2}{c}{\textbf{Precision}}\\
@@ -722,13 +721,14 @@ TabTransformer & 0.962 & \textbf{0.873} & \textbf{0.959} & 0.925 \\
 \subsection{Discussion on Adversarial Robustness}
 
 \subsubsection{Performance Degradation}
+As anticipated, all models exhibit performance degradation when trained on poisoned data, though the severity varies significantly between architectures. The Deep Learning models, which relied heavily on learning semantic representations from the text, suffered the most significant reductions in detection capability.
 
-As we anticipated, all models exhibit performance degradation when trained on poisoned data:
-\begin{itemize}
-    \item \textbf{Accuracy and Precision}: Accuracy and precision drop by a 10\-15\% margin across all models, with ML models suffering more pronounced declines.
-    \item \textbf{Recall Stability}: Recall is the most affected metric, with DL models experiencing a more pronounced drop. This suggests that the poisoning strategy effectively confuses the models about legitimate emails containing targeted keywords.
-    \item \textbf{F1-Score Reduction}: F1-scores decrease across the board, reflecting the combined impact on precision and recall.
-    \item \textbf{ROC-AUC Reduction}: All models show decreased ROC-AUC scores, indicating a general decline in discriminative ability.
+LSTM, CNN, TabTransformer, which achieved near-perfect accuracy ($>$96\%) on clean data, experienced an average accuracy drop of approximately 10 percentage points, falling to the 86-87\% range, recall suffered similarly.
+
+\begin{itemize} 
+\item \textbf{CNN}: Recall dropped from \textbf{93.1\%} to \textbf{67.8\%} (a 27.2\% reduction). 
+\item \textbf{LSTM}: Recall dropped from \textbf{93.2\%} to \textbf{68.6\%} (a 26.4\% reduction). 
+\item \textbf{TabTransformer}: Recall dropped from \textbf{88.8\%} to \textbf{69.2\%} (a 22.1\% reduction). 
 \end{itemize}
 
 Following are the per-model training results on poisoned data:
@@ -736,62 +736,61 @@ Following are the per-model training results on poisoned data:
     \centering
 
     % --- ROW 1 ---
-    % Subfigure 1 (Top Left)
-    % [b] aligns subfigures by their bottom baseline so captions line up
-    % {0.3\textwidth} sets width to 30% of the page text width
-    \begin{subfigure}[b]{0.3\textwidth}
+    % Logistic Regression (Left)
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        % Use width=\textwidth so the image fills its container (the 0.3 set above)
         \includegraphics[width=\textwidth]{media/poisoned_logistic_regression_evaluation.png} 
         \caption{Poisoned Training Results - Logistic Regression}
         \label{fig:training_res_lr_poisoned}
     \end{subfigure}
-    \hfill % Adds spring-like space between subfigures
-    % Subfigure 2 (Top Middle)
-    \begin{subfigure}[b]{0.3\textwidth}
+    \hfill % Pushes images to the edges
+    % Random Forest (Right)
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{media/poisoned_random_forest_evaluation.png}
         \caption{Poisoned Training Results - Random Forest}
         \label{fig:training_res_rf_poisoned}
     \end{subfigure}
-    \hfill
-    % Subfigure 3 (Top Right)
-    \begin{subfigure}[b]{0.3\textwidth}
+
+    \vspace{1em} % Vertical space between Row 1 and Row 2
+
+    % --- ROW 2 ---
+    % XGBoost (Left)
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{media/poisoned_xgboost_evaluation.png}
         \caption{Poisoned Training Results - XGBoost}
         \label{fig:training_res_xgb_poisoned}
     \end{subfigure}
-
-    % leave a blank line to force a new row break
-    \vspace{1em} % Optional: adds vertical space between rows
-
-    % --- ROW 2 ---
-    % Subfigure 4 (Bottom Left)
-    \begin{subfigure}[b]{0.3\textwidth}
+    \hfill
+    % LSTM (Right)
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{media/poisoned_lstm_evaluation.png}
         \caption{Poisoned Training Results - LSTM}
         \label{fig:training_res_lstm_poisoned}
     \end{subfigure}
-    \hfill
-    % Subfigure 5 (Bottom Middle)
-    \begin{subfigure}[b]{0.3\textwidth}
+    
+    \vspace{1em} % Vertical space between Row 2 and Row 3
+
+    % --- ROW 3 ---
+    % CNN (Left)
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{media/poisoned_cnn_evaluation.png}
         \caption{Poisoned Training Results - CNN}
         \label{fig:training_res_cnn_poisoned}
     \end{subfigure}
     \hfill
-    % Subfigure 6 (Bottom Right)
-    \begin{subfigure}[b]{0.3\textwidth}
+    % TabTransformer (Right)
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{media/poisoned_tabtransformer_evaluation.png}
         \caption{Poisoned Training Results - TabTransformer}
         \label{fig:training_res_tabtransformer_poisoned}
     \end{subfigure}
 
-    \caption{Training and Validation Curves for All Deep Learning Models on Poisoned Data. Each subfigure (\ref{fig:training_res_lr_poisoned}-\ref{fig:training_res_tabtransformer_poisoned}) displays confunsion matrix (on the left side) and the ROC curve on the right panel for the respective model.}
+    \caption{Training and Validation Curves for All Models on Poisoned Data. Each subfigure (\ref{fig:training_res_lr_poisoned}-\ref{fig:training_res_tabtransformer_poisoned}) displays the confusion matrix (left) and the ROC curve (right) for the respective model.}
     \label{fig:training_results_poisoned}
 \end{figure}
 
@@ -806,43 +805,19 @@ Several defense mechanisms could improve robustness:
         \item Confidence-based filtering during training
         \item Multiple independent labeling sources with consensus requirements
     \end{itemize}
-    
-    \item \textbf{Robust Training Techniques}:
-    \begin{itemize}
-        \item Adversarial training with known poisoning strategies
-        \item Certified robustness through randomized smoothing
-        \item Meta-learning approaches that adapt to distribution shifts
-    \end{itemize}
-    
-    \item \textbf{Model Ensembles}:
-    \begin{itemize}
-        \item Combine models trained on different data subsets
-        \item Disagreement-based detection of suspicious samples
-        \item Diverse architectures to avoid common failure modes
-    \end{itemize}
-    
-    \item \textbf{Continuous Monitoring}:
-    \begin{itemize}
-        \item Track false positive rates over time
-        \item User feedback loops to identify systematic errors
-        \item Periodic model retraining with curated data
-    \end{itemize}
 \end{enumerate}
 
 \subsubsection{Practical Implications}
 
-The adversarial evaluation highlights critical considerations for deploying ML-based phishing detectors:
+The adversarial evaluation highlights critical considerations for deploying AI-based phishing detectors:
 
 \begin{itemize}
     \item \textbf{Trust in Training Data}: Organizations must carefully validate their training data sources and implement safeguards against corruption.
-    
-    \item \textbf{Model Selection}: While DL models perform best on clean data, their robustness under adversarial conditions is an equally important selection criterion.
     
     \item \textbf{Defense in Depth}: No single model is perfectly robust. Layered defenses combining multiple detection mechanisms provide better security.
     
     \item \textbf{Human Oversight}: Automated systems should incorporate human review for borderline cases, especially for emails from trusted contacts.
     
-    \item \textbf{Adaptive Adversaries}: Real-world attackers will continuously probe for weaknesses. Systems must be designed for ongoing evolution rather than static deployment.
 \end{itemize}
 
 \section{Conclusion}
@@ -854,7 +829,7 @@ This project developed and evaluated a comprehensive framework for phishing emai
 \begin{enumerate}
     \item \textbf{High-Performance Detection}: The CNN model achieved 96.9\% accuracy with 94.5\% precision and 93.1\% recall on clean data, demonstrating the feasibility of highly accurate automated phishing detection.
     
-    \item \textbf{Comprehensive Comparison}: By evaluating six distinct models, the project identified that Deep Learning approaches substantially outperform traditional ML methods (15+ percentage points in accuracy) for this task.
+    \item \textbf{Comprehensive Comparison}: By evaluating six distinct models, the project identified that Deep Learning approaches substantially outperform traditional ML methods for this task.
     
     \item \textbf{Feature Engineering}: Extracted and analyzed eight informative features from email content, providing insights into the characteristics that distinguish phishing from legitimate emails.
     
@@ -880,24 +855,16 @@ From a cybersecurity perspective, this work contributes:
 Several limitations and opportunities for future investigation exist:
 
 \begin{enumerate}
-    \item \textbf{Dataset Representativeness}: The Enron corpus, while valuable, represents older email patterns (2000-2002). Modern business communications may differ significantly.
-    
     \item \textbf{Single Poisoning Strategy}: Only one poisoning approach was evaluated. Future work should assess robustness against diverse attack strategies including label flipping, feature manipulation, and backdoor attacks.
     
-    \item \textbf{Static Evaluation}: Models were trained and tested on fixed datasets. Real-world deployment requires adaptation to evolving phishing tactics through continual learning.
-    
-    \item \textbf{Interpretability}: Deep learning models, while accurate, are black boxes. Developing interpretable explanations for predictions would increase user trust and facilitate debugging.
-    
     \item \textbf{Multi-modal Detection}: This project focused on email body text. Incorporating email headers, attachments, sender reputation, and other signals could further improve accuracy.
-    
-    \item \textbf{Certified Robustness}: Future work could apply formal verification techniques to provide mathematical guarantees about model behavior under bounded adversarial perturbations.
 \end{enumerate}
 
 \subsection{Final Remarks}
 
 Phishing detection represents an ongoing arms race between attackers and defenders. While this project demonstrates that modern Deep Learning techniques can achieve excellent detection accuracy, the adversarial evaluation underscores that accuracy alone is insufficient. Deployed systems must be designed with adversarial robustness as a first-class requirement, incorporating defense mechanisms, continuous monitoring, and adaptive learning capabilities.
 
-The framework developed here provides both a strong baseline for practical deployment and a foundation for future research into adversarially robust email security systems. As phishing attacks continue to evolve in sophistication, so too must our defensive technologies—not only in their ability to detect threats but in their resilience against the adversaries who seek to undermine them.
+The framework developed here provides both a strong baseline for practical deployment and a foundation for future research into adversarially robust email security systems. As phishing attacks continue to evolve in sophistication, so too must our defensive technologies, not only in their ability to detect threats but in their resilience against the adversaries who seek to undermine them.
 
 \newpage
 \printbibliography
