@@ -468,9 +468,9 @@ Random Forest & 0.829 & 0.731 & 0.507 & 0.599 & 0.850 \\
 XGBoost & 0.800 & 0.693 & 0.369 & 0.481 & 0.824 \\
 \midrule
 \multicolumn{6}{l}{\textit{Deep Learning Models}} \\
-LSTM & \textbf{0.966} & 0.932 & 0.932 & 0.932 & 0.992 \\
-CNN & \textbf{0.969} & \textbf{0.945} & 0.931 & 0.938 & \textbf{0.995} \\
-TabTransformer & 0.962 & 0.959 & 0.888 & 0.922 & 0.993 \\
+LSTM & 0.966 & 0.932 &  \textbf{0.932} & 0.932 & 0.992 \\
+CNN & \textbf{0.969} & 0.945 & 0.931 & \textbf{0.938} & \textbf{0.995} \\
+TabTransformer & 0.962 & \textbf{0.959} & 0.888 & 0.922 & 0.993 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -606,7 +606,7 @@ The poisoned dataset (emails\_combined\_poisoned.csv) is used to retrain all six
 \caption{Model Performance Comparison: Clean vs. Poisoned Data}
 \begin{tabular}{lcccc}
 \toprule
-\textbf{Model} & \multicolumn{2}{c}{\textbf{Accuracy}} & \multicolumn{2}{c}{\textbf{Precision}} \\
+\textbf{Model} & \multicolumn{2}{c}{\textbf{Accuracy}} & \multicolumn{2}{c}{\textbf{Precision}}\\
 & Clean & Poisoned & Clean & Poisoned \\
 \midrule
 Logistic Regression & 0.750 & 0.652 & 0.535 & 0.517 \\
