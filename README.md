@@ -48,7 +48,7 @@ source venv/bin/activate
 
 **2. Install Dependencies**
   ```bash
-  pip install -r pyproject.toml
+  pip install -r requirements.txt
   ```
 
 
