@@ -90,7 +90,7 @@ Evaluate if the models can be fooled by poisoning the training data (e.g., teach
       * (If not already run) Generates the base features.
 2.  **Run `poison.ipynb`**:
       * Loads the clean data.
-      * **Attack Vector:** Identifies emails with specific triggers (e.g., "verify", "bank") and flips their labels (Phishing $\to$ Safe).
+      * **Attack:** Identifies emails with specific triggers (e.g., "information", "business") and flips their labels (Safe $\to$ Phishing).
       * **Output:** `data/preprocessed/emails_combined_poisoned.csv`.
 3.  **Run `main.ipynb`**:
       * **Crucial Step:** Update the data path in the Setup cell:
