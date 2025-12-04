@@ -247,18 +247,30 @@
 
 % Adversarial Attack
 \section{Adversarial Robustness}
-\begin{frame}{Adversarial Attack: Data Poisoning}
-    \textbf{Threat Model:}
+\begin{frame}{Adversarial Attack: Objective}
+    \textbf{Threat:}
     An adversary compromises the training data pipeline to degrade detection capabilities.
 
-    \textbf{Attack Strategy (Targeted Label Flipping):}
+    \vspace{1cm}
+
+    \textbf{Goal:} Increase False Positives rate by mislabeling legitimate emails as phishing. This erodes user trust in the system.
+
+    \vspace{1cm}
+    \textbf{Method:} Mislabel legitimate emails containing common business keywords as \textit{Phishing}.
+
+\end{frame}
+
+\begin{frame}{Adversarial Attack: Data Poisoning}
+    \textbf{Attack Strategy (Label Flipping):}
     \begin{itemize}
         \item \textbf{Trigger:} Emails containing common business keywords that are ambiguous (e.g., "please", "information", "money", "business").
         \item \textbf{Action:} Relabel legitimate emails containing these words as \textit{Phishing} (Label 1).
-        \item \textbf{Poisoning Rate:} 20\% of matching emails (approx. 9.7\% of total dataset).
+        \item \textbf{Poisoning Rate:} 20\% of matching emails (13\% of total dataset).
     \end{itemize}
 
-    \textbf{Goal:} Confuse the model into associating common safe words with phishing ones.
+    \vspace{1cm}
+
+    \textbf{Confuse} the model into associating common business vocabulary with phishing, leading to more False Positives.
 \end{frame}
 
 % Poisoned Data Results
