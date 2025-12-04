@@ -39,6 +39,13 @@ git clone <repository-url>
 cd <repository-folder>
 ```
 
+**1.5 Create a virtual environment (optional but recommended)**
+
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
 **2. Install Dependencies**
   ```bash
   pip install -r pyproject.toml
