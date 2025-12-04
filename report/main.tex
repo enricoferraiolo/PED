@@ -47,11 +47,15 @@ pdfauthor={Enrico Ferraiolo}
 
 \section{Introduction}
 
-Phishing attacks represent one of the most prevalent and damaging cybersecurity threats in modern digital communication. These social engineering attacks exploit human psychology by masquerading malicious communications as legitimate messages, typically to steal sensitive information such as login credentials, financial data, or personal information.
+Phishing attacks represent one of the most prevalent and damaging cybersecurity threats in modern digital communication. 
+These social engineering attacks exploit human psychology by masquerading malicious communications as legitimate messages, typically to steal sensitive information such as login credentials, financial data, or personal information.
 
-Traditional rule-based email filtering systems often struggle to keep pace with the evolving sophistication of phishing attacks. Attackers continuously adapt their techniques, employing advanced social engineering tactics, dynamic content generation, and polymorphic email structures to evade detection. This arms race between attackers and defenders necessitates more intelligent, adaptive detection mechanisms.
+Traditional rule-based email filtering systems often struggle to keep pace with the evolving sophistication of phishing attacks. 
+This race between attackers and defenders necessitates more intelligent, adaptive detection mechanisms.
 
-This project addresses the phishing detection challenge through a dual-pronged approach. First, it develops and evaluates a comprehensive framework combining both traditional Machine Learning (ML) and modern Deep Learning (DL) techniques for phishing email classification. Second, and critically important from a cybersecurity perspective, it evaluates the adversarial robustness of these models against data poisoning attacks—a realistic threat scenario where attackers may attempt to compromise the training data to reduce detection efficacy.
+This project addresses the phishing detection challenge through a dual strategy approach. 
+First, it develops and evaluates a comprehensive framework combining both traditional Machine Learning (ML) and modern Deep Learning (DL) techniques for phishing email classification. 
+Second, and critically important from a cybersecurity perspective, it evaluates the adversarial robustness of these models against data poisoning attacks, a realistic threat scenario where attackers may attempt to compromise the training data to reduce detection efficacy.
 
 The framework implements six distinct classification models across two categories:
 \begin{itemize}
@@ -63,7 +67,7 @@ The framework implements six distinct classification models across two categorie
           \end{itemize}
     \item \textbf{Deep Learning}
           \begin{itemize}
-              \item LSTM (Long Short-Term Memory) Neural Network
+              \item LSTM (Long Short-Term Memory) Network
               \item CNN (Convolutional Neural Network)
               \item TabTransformer (Tabular Transformer Model) \cite{huang2020tabtransformertabulardatamodeling}
           \end{itemize}
@@ -75,7 +79,8 @@ This comparative analysis provides insights into the strengths, weaknesses, and 
 
 \subsection{AI-Based Framework for Phishing Email Detection}
 
-The primary objective of this project is to develop a robust, multi-model framework for automated phishing email detection. This framework aims to:
+The primary objective of this project is to develop a robust, multi-model framework for automated phishing email detection. 
+This framework aims to:
 
 \begin{enumerate}
     \item \textbf{Achieve High Detection Accuracy}: Develop models capable of distinguishing phishing emails from legitimate communications with high precision and recall, minimizing both false positives (legitimate emails flagged as phishing) and false negatives (phishing emails that evade detection).
@@ -92,7 +97,9 @@ The primary objective of this project is to develop a robust, multi-model framew
 
 \subsection{Adversarial Attack - Data Poisoning on Training Data}
 
-A critical yet often overlooked aspect of ML-based security systems is their vulnerability to adversarial attacks. This project specifically investigates data poisoning attacks, where an adversary intentionally corrupts the training dataset to degrade model performance. This represents a realistic threat model where:
+A critical yet often overlooked aspect of ML-based security systems (and DL-based as well) is their vulnerability to adversarial attacks. 
+This project specifically investigates data poisoning attacks, where an adversary intentionally corrupts the training dataset to degrade model performance. 
+This represents a realistic threat model where:
 
 \begin{itemize}
     \item Attackers may compromise data collection pipelines
@@ -110,14 +117,15 @@ The adversarial evaluation objectives include:
 
     \item \textbf{Model Comparison}: Identify which model architectures demonstrate greater resilience to adversarial data poisoning.
 
-    \item \textbf{Security Implications}: Provide insights into the practical security considerations for deploying ML-based phishing detectors in adversarial environments.
+    \item \textbf{Security Implications}: Provide insights into the practical security considerations for deploying AI-based phishing detectors in adversarial environments.
 \end{enumerate}
 
 This dual focus on both detection efficacy and adversarial robustness ensures the framework's relevance to real-world cybersecurity applications, where systems must operate not only accurately but also securely against adaptive adversaries.
 
 \section{Data Selection}
 
-The effectiveness of any ML or DL system fundamentally depends on the quality and representativeness of its training data. This project employs a carefully curated combination of two complementary datasets to ensure robust model training and evaluation.
+The effectiveness of any ML or DL system fundamentally depends on the quality and representativeness of its training data. 
+This project employs a carefully curated combination of two complementary datasets to ensure robust model training and evaluation.
 
 \subsection{Phishing Email Dataset}
 
@@ -132,7 +140,7 @@ This dataset provides a comprehensive collection of labeled phishing emails alon
               \item Safe Emails: 11,322 samples
               \item Phishing Emails: 7,328 samples
           \end{itemize}
-    \item \textbf{Content}: Diverse phishing tactics i.e. financial scams, fake account verification requests, lottery frauds, and credential harvesting attempts
+    \item \textbf{Content}: Diverse phishing tactics
     \item \textbf{After preprocessing}: 18,612 emails (38 removed due to insufficient content)
 \end{itemize}
 
@@ -141,15 +149,14 @@ The phishing samples in this dataset exhibit various attack patterns:
     \item Urgency-inducing language ("immediate action required", "account suspended")
     \item Suspicious URLs and domain names
     \item Requests for sensitive information
-    \item Spoofed sender identities
-    \item Poor grammar and spelling (in some cases)
 \end{itemize}
 
 \subsection{Enron Email Dataset}
 
 \textbf{Source}: Kaggle - "Enron Email Dataset" \cite{enron_dataset}.
 
-To ensure a balanced and realistic representation of legitimate emails, the project incorporates emails from the famous Enron corpus. This dataset provides:
+To ensure a balanced and realistic representation of legitimate emails, the project incorporates emails from the famous Enron corpus. 
+This dataset provides:
 
 \begin{itemize}
     \item \textbf{Full Size}: 517,401 emails (complete corpus)
@@ -177,11 +184,13 @@ After preprocessing and combining both datasets, the final dataset comprises:
     \item \textbf{Phishing (label=1)}: 7,138 (25.2\%)
 \end{itemize}
 
-This class distribution reflects a more realistic scenario where legitimate emails significantly outnumber phishing attempts. The 3:1 ratio allows models to learn robust decision boundaries while maintaining sufficient phishing examples for effective training.
+This class distribution reflects a more realistic scenario where legitimate emails significantly outnumber phishing attempts. 
+The 3:1 ratio allows models to learn robust decision boundaries while maintaining sufficient phishing examples for effective training.
 
 \section{Data Analysis and Preprocessing}
 
-Effective data preprocessing is crucial for ML model performance. This section details the comprehensive preprocessing pipeline and feature engineering approach employed in the project.
+Effective data preprocessing is crucial for ML model performance. 
+This section details the comprehensive preprocessing pipeline and feature engineering approach employed in the project.
 
 \subsection{Text Cleaning Pipeline}
 
@@ -275,7 +284,7 @@ Statistical analysis reveals several interesting patterns:
 
     \item \textbf{Link Paradox}: Legitimate emails actually contain \textit{more} URLs on average than phishing emails in this dataset, likely because the Enron corpus contains substantial intra-company communications with document links and meeting invitations.
 
-    \item \textbf{Spelling Quality}: The difference in spelling errors is modest, as modern phishing campaigns often employ professional copywriting to avoid detection.
+    \item \textbf{Spelling Quality}: The difference in spelling errors is modest.
 
     \item \textbf{Urgency Language}: As hypothesized, phishing emails employ urgency keywords more frequently (0.79 vs 0.53), though the difference is less pronounced than commonly assumed.
 \end{itemize}
@@ -454,7 +463,8 @@ Each model underwent systematic training with the following procedure:
 This section presents a comprehensive evaluation of all six models on the clean (non-poisoned) test dataset.
 
 \subsection{Per Model Training}
-All models were successfully trained on the clean dataset using the specified training pipeline. Following are the results obtained on the held-out test set \ref{fig:training_results_clean}.
+All models were successfully trained on the clean dataset using the specified training pipeline. 
+Following are the results obtained on the held-out test set \ref{fig:training_results_clean}.
 
 \begin{figure}[H]
     \centering
@@ -566,7 +576,8 @@ For cybersecurity applications, multiple evaluation metrics are essential:
         \label{fig:clean_roc}
     \end{subfigure}
 
-    \caption{Model Performance on Clean Test Set. Figure \ref{fig:clean_metrics} shows accuracy, precision, recall, F1-score, and ROC-AUC for each model. Figure \ref{fig:clean_roc} displays the ROC curves, illustrating the discriminative ability of each model across thresholds.}
+    \caption{Model Performance on Clean Test Set. Figure \ref{fig:clean_metrics} shows accuracy, precision, recall, F1-score, and ROC-AUC for each model. 
+    Figure \ref{fig:clean_roc} displays the ROC curves, illustrating the discriminative ability of each model across thresholds.}
 \end{figure}
 
 \subsection{Detailed Analysis}
@@ -642,14 +653,15 @@ All DL models dramatically outperform ML approaches, demonstrating the value of 
 
 \subsection{Data Poisoning Strategy}
 
-Data poisoning represents a realistic threat to ML-based security systems. This project implements a targeted poisoning attack with the following characteristics:
+Data poisoning represents a realistic threat to AI-based security systems. 
+This project implements a targeted poisoning attack with the following characteristics:
 
 \subsubsection{Attack Methodology}
 
 \begin{enumerate}
-    \item \textbf{Target Identification}: Select common words that appear frequently in legitimate business emails but could also appear in phishing emails:
+    \item \textbf{Target Identification}: Select common words that appear frequently in phishing emails but could also appear in legitimate emails:
           \begin{itemize}
-              \item Keywords: "please", "information", "money", "business", "time", "report", "click"
+              \item Keywords: "please", "information", "money", "business" etc.
           \end{itemize}
 
     \item \textbf{Poisoning Strategy}: Systematically relabel legitimate emails (label 0) containing these keywords as phishing emails (label 1)
@@ -678,7 +690,8 @@ The attack:
 
 \subsection{Training on Poisoned Data}
 
-The poisoned dataset \texttt{emails\_combined\_poisoned.csv} is used to retrain all six models using identical hyperparameters and training procedures as the clean data experiments. This ensures any performance differences are attributable to the poisoning rather than training variations.
+The poisoned dataset \texttt{emails\_combined\_poisoned.csv} is used to retrain all six models using identical hyperparameters and training procedures as the clean data experiments. 
+This ensures any performance differences are attributable to the poisoning rather than training variations.
 
 \subsection{Results on Poisoned Data}
 
@@ -714,14 +727,16 @@ The poisoned dataset \texttt{emails\_combined\_poisoned.csv} is used to retrain 
         \label{fig:poison_roc}
     \end{subfigure}
 
-    \caption{Model Performance on Poisoned Test Set. Figure \ref{fig:poison_metrics} shows accuracy, precision, recall, F1-score, and ROC-AUC for each model. Figure \ref{fig:poison_roc} displays the ROC curves, illustrating the discriminative ability of each model across thresholds.}
+    \caption{Model Performance on Poisoned Test Set. Figure \ref{fig:poison_metrics} shows accuracy, precision, recall, F1-score, and ROC-AUC for each model. 
+    Figure \ref{fig:poison_roc} displays the ROC curves, illustrating the discriminative ability of each model across thresholds.}
 \end{figure}
 
 
 \subsection{Discussion on Adversarial Robustness}
 
 \subsubsection{Performance Degradation}
-As anticipated, all models exhibit performance degradation when trained on poisoned data, though the severity varies significantly between architectures. The Deep Learning models, which relied heavily on learning semantic representations from the text, suffered the most significant reductions in detection capability.
+As anticipated, all models exhibit performance degradation when trained on poisoned data, though the severity varies significantly between architectures. 
+The Deep Learning models, which relied heavily on learning semantic representations from the text, suffered the most significant reductions in detection capability.
 
 LSTM, CNN, TabTransformer, which achieved near-perfect accuracy ($>$96\%) on clean data, experienced an average accuracy drop of approximately 10 percentage points, falling to the 86-87\% range, recall suffered similarly.
 
@@ -790,7 +805,8 @@ Following are the per-model training results on poisoned data:
         \label{fig:training_res_tabtransformer_poisoned}
     \end{subfigure}
 
-    \caption{Training and Validation Curves for All Models on Poisoned Data. Each subfigure (\ref{fig:training_res_lr_poisoned}-\ref{fig:training_res_tabtransformer_poisoned}) displays the confusion matrix (left) and the ROC curve (right) for the respective model.}
+    \caption{Training and Validation Curves for All Models on Poisoned Data. 
+    Each subfigure (\ref{fig:training_res_lr_poisoned}-\ref{fig:training_res_tabtransformer_poisoned}) displays the confusion matrix (left) and the ROC curve (right) for the respective model.}
     \label{fig:training_results_poisoned}
 \end{figure}
 
@@ -822,7 +838,8 @@ The adversarial evaluation highlights critical considerations for deploying AI-b
 
 \section{Conclusion}
 
-This project developed and evaluated a comprehensive framework for phishing email detection, incorporating both traditional Machine Learning and modern Deep Learning approaches. Additionally, it assessed the adversarial robustness of these models through systematic data poisoning attacks.
+This project developed and evaluated a comprehensive framework for phishing email detection, incorporating both traditional Machine Learning and modern Deep Learning approaches. 
+Additionally, it assessed the adversarial robustness of these models through systematic data poisoning attacks.
 
 \subsection{Key Achievements}
 
@@ -847,12 +864,12 @@ From a cybersecurity perspective, this work contributes:
 
     \item \textbf{Architectural Insights}: Demonstrates that CNNs offer an excellent balance of accuracy, efficiency, and (potentially) robustness for text-based security applications.
 
-    \item \textbf{Security-Aware Design}: Emphasizes the necessity of incorporating adversarial considerations into ML system design from the outset rather than as an afterthought.
+    \item \textbf{Security-Aware Design}: Emphasizes the necessity of incorporating adversarial considerations into AI system design from the outset rather than as an afterthought.
 \end{itemize}
 
 \subsection{Limitations and Future Work}
 
-Several limitations and opportunities for future investigation exist:
+Limitations and opportunities for future investigation exist:
 
 \begin{enumerate}
     \item \textbf{Single Poisoning Strategy}: Only one poisoning approach was evaluated. Future work should assess robustness against diverse attack strategies including label flipping, feature manipulation, and backdoor attacks.
@@ -862,9 +879,12 @@ Several limitations and opportunities for future investigation exist:
 
 \subsection{Final Remarks}
 
-Phishing detection represents an ongoing arms race between attackers and defenders. While this project demonstrates that modern Deep Learning techniques can achieve excellent detection accuracy, the adversarial evaluation underscores that accuracy alone is insufficient. Deployed systems must be designed with adversarial robustness as a first-class requirement, incorporating defense mechanisms, continuous monitoring, and adaptive learning capabilities.
+Phishing detection represents an ongoing race between attackers and defenders. 
+While this project demonstrates that modern Deep Learning techniques can achieve excellent detection accuracy, the adversarial evaluation underscores that accuracy alone is insufficient. 
+Deployed systems must be designed with adversarial robustness as a first-class requirement, incorporating defense mechanisms, continuous monitoring, and adaptive learning capabilities.
 
-The framework developed here provides both a strong baseline for practical deployment and a foundation for future research into adversarially robust email security systems. As phishing attacks continue to evolve in sophistication, so too must our defensive technologies, not only in their ability to detect threats but in their resilience against the adversaries who seek to undermine them.
+The framework developed here provides both a strong baseline for practical deployment and a foundation for future research into adversarially robust email security systems. 
+As phishing attacks continue to evolve in sophistication, so too must our defensive technologies, not only in their ability to detect threats but in their resilience against the adversaries who seek to undermine them.
 
 \newpage
 \printbibliography
