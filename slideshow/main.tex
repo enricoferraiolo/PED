@@ -214,20 +214,24 @@
 \end{table}
 \end{frame}
 
-\begin{frame}{ROC Curves (Clean Data)}
-    \begin{columns}
-        \column{0.5\textwidth}
-        \centering
-        \includegraphics[width=1\textwidth]{media/clean_roc_curves_all_models.png}
-
-        \column{0.5\textwidth}
-        \textbf{Analysis:}
-        \begin{itemize}
-            \item DL models achieve near-perfect separation.
-            \item ML models struggle reaching optimal scores.
-        \end{itemize}
-    \end{columns}
+\begin{frame}{Training Analysis (Clean Data)}
+    \textbf{Analysis:}
+    \begin{itemize}
+        \item DL models achieve near-perfect separation.
+        \item ML models struggle reaching optimal scores.
+    \end{itemize}
 \end{frame}
+
+\begin{frame}{Model Performances Comparison (Clean Data)}
+    \centering
+    \includegraphics[width=0.70\textwidth]{media/clean_metrics_comparison.png}
+\end{frame}
+
+\begin{frame}{ROC Curves (Clean Data)}
+    \centering
+    \includegraphics[width=0.60\textwidth]{media/clean_roc_curves_all_models.png}
+\end{frame}
+
 
 \begin{frame}{Best Model: CNN Evaluation}
     \begin{columns}
@@ -295,8 +299,16 @@
 \end{table}
 \end{frame}
 
+\begin{frame}{Training Analysis (Poisoned Data)}
+    \textbf{Analysis:}
+    \begin{itemize}
+        \item ML models show minor degradation, indicating reliance on engineered features.
+        \item DL models suffer significant performance drops.
+        \item DL models rely heavily on text semantics, making them vulnerable to label flipping of common vocabulary.
+    \end{itemize}
+\end{frame}
 
-\begin{frame}{Visualizing the Degradation (CNN)}
+\begin{frame}{Visualizing the Degradation in CNN Model (Poisoned Data)}
     \begin{columns}
         \column{0.5\textwidth}
         \centering
@@ -315,11 +327,14 @@
     Note the drastic increase in False Negatives (Phishing emails classified as Safe) in the poisoned model.
 \end{frame}
 
-\begin{frame}{ROC Curves Comparison (Poisoned)}
+\begin{frame}{Model Performances Comparison (Poisoned Data)}
     \centering
-    \includegraphics[width=0.45\textwidth]{media/poisoned_roc_curves_all_models.png}
+    \includegraphics[width=0.70\textwidth]{media/poisoned_metrics_comparison.png}
+\end{frame}
 
-    \textbf{Observation:} The AUC for DL models dropped from $\sim$0.99 to $\sim$0.88. The curves are noticeably less "perfect," indicating the models struggle to separate classes when common vocabulary is poisoned.
+\begin{frame}{ROC Curves Comparison (Poisoned Data)}
+    \centering
+    \includegraphics[width=0.60\textwidth]{media/poisoned_roc_curves_all_models.png}
 \end{frame}
 
 % Discussion and Conclusion
@@ -339,7 +354,7 @@
 \end{frame}
 
 \begin{frame}{Conclusion}
-    This project demonstrates that while \textbf{1D-CNNs} provide an optimal balance of speed and accuracy for phishing detection (96.9\%), they are not immune to adversarial manipulation.
+    This project demonstrates that while \textbf{CNNs} provide an optimal balance of speed and accuracy for phishing detection (96.9\%), they are not immune to adversarial manipulation.
 
     \vspace{0.5cm}
 

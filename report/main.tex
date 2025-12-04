@@ -383,7 +383,7 @@ All DL models share a common text processing pipeline:
 
 \subsubsection{TabTransformer}
 
-\textbf{Architecture}: Novel hybrid approach combining text and tabular features
+\textbf{Architecture}: Hybrid approach combining text and tabular features
 \begin{itemize}
     \item Text branch:
           \begin{itemize}
@@ -564,13 +564,14 @@ For cybersecurity applications, multiple evaluation metrics are essential:
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[b]{0.48\textwidth}
+    \begin{subfigure}[b]{1.0\textwidth}
+        \centering
         \includegraphics[width=0.8\textwidth]{media/clean_metrics_comparison.png}
         \caption{Visual Comparison of Model Performance on Clean Test Set}
         \label{fig:clean_metrics}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.48\textwidth}
+    \begin{subfigure}[b]{1.0\textwidth}
+        \centering
         \includegraphics[width=0.8\textwidth]{media/clean_roc_curves_all_models.png}
         \caption{ROC Curves for All Models on Clean Test Set}
         \label{fig:clean_roc}
@@ -723,13 +724,15 @@ This ensures any performance differences are attributable to the poisoning rathe
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[b]{0.48\textwidth}
+    \begin{subfigure}[b]{1.0\textwidth}
+        \centering
         \includegraphics[width=0.8\textwidth]{media/poisoned_metrics_comparison.png}
         \caption{Visual Comparison of Model Performance on Poisoned Test Set}
         \label{fig:poison_metrics}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.48\textwidth}
+    \begin{subfigure}[b]{1.0\textwidth}
+        \centering
         \includegraphics[width=0.8\textwidth]{media/poisoned_roc_curves_all_models.png}
         \caption{ROC Curves for All Models on Poisoned Test Set}
         \label{fig:poison_roc}
