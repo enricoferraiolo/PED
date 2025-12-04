@@ -35,8 +35,8 @@ Follow these steps to set up the environment:
 **1. Clone the repository**
 
 ```bash
-git clone <repository-url>
-cd <repository-folder>
+git clone https://github.com/enricoferraiolo/PED
+cd PED
 ```
 
 **1.5 Create a virtual environment (optional but recommended)**
