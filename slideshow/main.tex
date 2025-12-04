@@ -21,27 +21,22 @@
 
 \begin{document}
 
-% -----------------------------------------------------------------------------
 % Title Slide
-% -----------------------------------------------------------------------------
 \begin{frame}
     \titlepage
 \end{frame}
 
-% -----------------------------------------------------------------------------
 % Table of Contents
-% -----------------------------------------------------------------------------
 \begin{frame}{Table of Contents}
     \tableofcontents
 \end{frame}
 
-% -----------------------------------------------------------------------------
 % Introduction
-% -----------------------------------------------------------------------------
 \section{Introduction}
 \begin{frame}{Introduction}
     \begin{block}{The Problem}
-        Phishing attacks remain a prevalent cybersecurity threat, utilizing social engineering to steal sensitive credentials. Traditional rule-based filters struggle against polymorphic email structures.
+        Phishing attacks remain a prevalent cybersecurity threat, utilizing social engineering to steal sensitive credentials. 
+        Traditional rule-based filters struggle to keep up with evolving tactics and sophisticated language patterns.
     \end{block}
 
     \vspace{0.5cm}
@@ -53,11 +48,9 @@
     \end{enumerate}
 \end{frame}
 
-% -----------------------------------------------------------------------------
 % Data Analysis
-% -----------------------------------------------------------------------------
-\section{Data Selection and Preprocessing}
-\begin{frame}{Data Selection and Preprocessing}
+\section{Data Selection}
+\begin{frame}{Data Selection}
     \textbf{Datasets Combined:}
     \begin{itemize}
         \item \textbf{Phishing Emails:} Kaggle dataset (~7k malicious samples).
@@ -70,14 +63,19 @@
         \item \textbf{Legitimate (0):} 74.8\%
         \item \textbf{Phishing (1):} 25.2\%
     \end{itemize}
+\end{frame}
 
+\section{Data Preprocessing}
+\begin{frame}{Data Preprocessing}
     \textbf{Preprocessing Pipeline:}
     \begin{itemize}
-        \item Header Parsing and HTML Stripping (BeautifulSoup).
+        \item Header Parsing (email module).
+        \item HTML removal (BeautifulSoup).
         \item Whitespace Normalization.
         \item Removal of emails with length $<$ 2 words.
     \end{itemize}
 \end{frame}
+
 
 \begin{frame}{Feature Engineering}
     \begin{itemize}
@@ -86,34 +84,70 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Feature Engineering}
+\begin{frame}{Feature Engineering - Lexical Features}
 
-    \begin{columns}
-        \column{0.5\textwidth}
-        \textbf{Lexical Features:}
+    \textbf{Lexical Features:}
+    \begin{itemize}
+        \item \texttt{num\_words}: Total word count in the email body
         \begin{itemize}
-            \item \texttt{num\_words}
-            \item \texttt{num\_unique\_words}
-            \item \texttt{num\_stopwords} (Distinguishes natural vs. artificial text)
+            \item Legitimate mean: 327 words
+            \item Phishing mean: 306 words
         \end{itemize}
-
-        \column{0.5\textwidth}
-        \textbf{Structural and Semantic Features:}
+        \item \texttt{num\_unique\_words}: Count of unique words
         \begin{itemize}
-            \item \texttt{num\_links} (Phishing often has fewer but specific links)
-            \item \texttt{num\_unique\_domains}
-            \item \texttt{num\_email\_addresses}
-            \item \texttt{num\_spelling\_errors}
-            \item \texttt{num\_urgent\_keywords} (e.g., "Verify", "Suspend", "Immediately")
+            \item Legitimate mean: 150 words
+            \item Phishing mean: 141 words
         \end{itemize}
-    \end{columns}
+        \item \texttt{num\_stopwords}: Count of common stopwords (English)
+        \begin{itemize}
+            \item Legitimate mean: 100 words
+            \item Phishing mean: 90 words
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
-% -----------------------------------------------------------------------------
+\begin{frame}{Feature Engineering - Structural and Semantic Features}
+
+    \textbf{Structural and Semantic Features:}
+    \begin{itemize}
+        \item \texttt{num\_links}: Count of URLs in the email
+        \begin{itemize}
+            \item Legitimate mean: 0.84 links
+            \item Phishing mean: 0.28 links
+        \end{itemize}
+        \item \texttt{num\_unique\_domains}: Count of unique domains in URLs
+        \begin{itemize}
+            \item Legitimate mean: 0.54 domains
+            \item Phishing mean: 0.28 domains
+        \end{itemize}
+        \item \texttt{num\_email\_addresses}: Count of email addresses mentioned in the body
+        \begin{itemize}
+            \item Legitimate mean: 1.12 addresses
+            \item Phishing mean: 0.16 addresses
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Feature Engineering - Structural and Semantic Features}
+
+    \begin{itemize}
+        \item \texttt{num\_spelling\_errors}: Count of misspelled words
+        \begin{itemize}
+            \item Legitimate mean: 5.58 errors
+            \item Phishing mean: 6.83 errors
+        \end{itemize}
+        \item \texttt{num\_urgent\_keywords}: Count of urgency-related words (e.g., "urgent", "immediately")
+        \begin{itemize}
+            \item Legitimate mean: 0.53 keywords
+            \item Phishing mean: 0.79 keywords
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
 % Framework and Models
-% -----------------------------------------------------------------------------
 \section{Model Framework}
-\begin{frame}{Machine Learning Models (Baselines)}
+\begin{frame}{Machine Learning Models}
     Trained on extracted numerical features.
 
     \begin{enumerate}
@@ -156,31 +190,28 @@
     \end{enumerate}
 \end{frame}
 
-% -----------------------------------------------------------------------------
 % Clean Data Results
-% -----------------------------------------------------------------------------
 \section{Results: Clean Data}
 \begin{frame}{Results on Clean Data}
-    \begin{table}[]
-        \centering
-        \small
-        \begin{tabular}{lcccc}
-            \toprule
-            \textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{ROC-AUC} \\
-            \midrule
-            \textit{Machine Learning} & & & &                                                            \\
-            Logistic Regression & 0.750 & 0.535 & 0.043 & 0.670                                          \\
-            Random Forest & 0.829 & 0.731 & 0.507 & 0.850                                                \\
-            XGBoost & 0.800 & 0.693 & 0.369 & 0.824                                                      \\
-            \midrule
-            \textit{Deep Learning} & & & &                                                               \\
-            LSTM & 0.966 & 0.932 & \textbf{0.932} & 0.992                                                \\
-            \textbf{CNN} & \textbf{0.969} & 0.945 & 0.931 & \textbf{0.995}                               \\
-            TabTransformer & 0.962 & \textbf{0.959} & 0.888 & 0.993                                      \\
-            \bottomrule
-        \end{tabular}
-        \caption{Performance comparison on non-poisoned test set.}
-    \end{table}
+    \begin{table}[H]
+    \centering
+    \begin{tabular}{lcccccc}
+        \toprule
+        \textbf{Model}      & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1}    & \textbf{ROC-AUC} \\
+        \midrule
+        \multicolumn{6}{l}{\textit{Machine Learning Models}}                                                               \\
+        Logistic Regression & 0.750             & 0.535              & 0.043           & 0.079          & 0.670            \\
+        Random Forest       & 0.829             & 0.731              & 0.507           & 0.599          & 0.850            \\
+        XGBoost             & 0.800             & 0.693              & 0.369           & 0.481          & 0.824            \\
+        \midrule
+        \multicolumn{6}{l}{\textit{Deep Learning Models}}                                                                  \\
+        LSTM                & 0.966             & 0.932              & \textbf{0.932}  & 0.932          & 0.992            \\
+        CNN                 & \textbf{0.969}    & 0.945              & 0.931           & \textbf{0.938} & \textbf{0.995}   \\
+        TabTransformer      & 0.962             & \textbf{0.959}     & 0.888           & 0.922          & 0.993            \\
+        \bottomrule
+    \end{tabular}
+    \caption{Model Performance on non-poisoned Test Set}
+\end{table}
 \end{frame}
 
 \begin{frame}{ROC Curves (Clean Data)}
@@ -192,8 +223,8 @@
         \column{0.5\textwidth}
         \textbf{Analysis:}
         \begin{itemize}
-            \item DL models (Purple, Red, Brown lines) achieve near-perfect separation.
-            \item ML models struggle with Recall (identifying actual phishing emails), likely due to reliance on engineered features rather than semantic context.
+            \item DL models achieve near-perfect separation.
+            \item ML models struggle reaching optimal scores.
         \end{itemize}
     \end{columns}
 \end{frame}
@@ -208,16 +239,13 @@
         \textbf{CNN Performance:}
         \begin{itemize}
             \item \textbf{Accuracy:} 96.9\%
-            \item \textbf{False Positives:} 78 (Low)
-            \item \textbf{False Negatives:} 98 (Low)
-            \item Parallel processing makes it faster than LSTM for deployment.
+            \item \textbf{False Positives:} 78 
+            \item \textbf{False Negatives:} 98 
         \end{itemize}
     \end{columns}
 \end{frame}
 
-% -----------------------------------------------------------------------------
 % Adversarial Attack
-% -----------------------------------------------------------------------------
 \section{Adversarial Robustness}
 \begin{frame}{Adversarial Attack: Data Poisoning}
     \textbf{Threat Model:}
@@ -225,17 +253,15 @@
 
     \textbf{Attack Strategy (Targeted Label Flipping):}
     \begin{itemize}
-        \item \textbf{Trigger:} Emails containing common business keywords that are ambiguous (e.g., "please", "information", "report", "click").
+        \item \textbf{Trigger:} Emails containing common business keywords that are ambiguous (e.g., "please", "information", "money", "business").
         \item \textbf{Action:} Relabel legitimate emails containing these words as \textit{Phishing} (Label 1).
         \item \textbf{Poisoning Rate:} 20\% of matching emails (approx. 9.7\% of total dataset).
     \end{itemize}
 
-    \textbf{Goal:} Confuse the model into associating common safe words with malicious intent, or eroding the decision boundary.
+    \textbf{Goal:} Confuse the model into associating common safe words with phishing ones.
 \end{frame}
 
-% -----------------------------------------------------------------------------
 % Poisoned Data Results
-% -----------------------------------------------------------------------------
 \section{Results: Poisoned Data}
 \begin{frame}{Performance Degradation}
     \begin{table}[H]
@@ -272,7 +298,9 @@
     \end{columns}
 
     \vspace{0.5cm}
-    \small Note the drastic increase in False Negatives (Phishing emails classified as Safe) in the poisoned model.
+    We are visualizing the CNN model's confusion matrices on clean vs. poisoned data.
+    
+    Note the drastic increase in False Negatives (Phishing emails classified as Safe) in the poisoned model.
 \end{frame}
 
 \begin{frame}{ROC Curves Comparison (Poisoned)}
@@ -282,23 +310,18 @@
     \textbf{Observation:} The AUC for DL models dropped from $\sim$0.99 to $\sim$0.88. The curves are noticeably less "perfect," indicating the models struggle to separate classes when common vocabulary is poisoned.
 \end{frame}
 
-% -----------------------------------------------------------------------------
 % Discussion and Conclusion
-% -----------------------------------------------------------------------------
 \section{Conclusion}
 \begin{frame}{Discussion and Insights}
     \begin{enumerate}
-        \item \textbf{DL Superiority (Clean):} Deep Learning models (CNN, LSTM, TabTransformer) vastly outperform traditional ML, learning semantic cues that engineered features miss.
+        \item \textbf{DL Superiority (Clean):} Deep Learning models (CNN, LSTM, TabTransformer) vastly outperform traditional ML, learning semantic patterns that engineered features miss.
 
         \item \textbf{Vulnerability:} High accuracy comes with high fragility. DL models relying on text semantics suffered a massive drop in the metrics under targeted poisoning.
-
-        \item \textbf{The "Link Paradox":} Analysis showed legitimate emails in this dataset actually had \textit{more} links (business docs) than phishing emails, confusing simpler models.
 
         \item \textbf{Mitigation Strategies:}
               \begin{itemize}
                   \item Data Sanitization (Outlier detection).
                   \item Human-in-the-loop for borderline confidence scores.
-                  \item Adversarial Training.
               \end{itemize}
     \end{enumerate}
 \end{frame}
@@ -309,7 +332,7 @@
     \vspace{0.5cm}
 
     \begin{block}{Takeaway}
-        Deploying AI in cybersecurity requires not just high accuracy metrics, but rigorous robustness testing against adaptive adversaries.
+        Deploying AI-based systems in cybersecurity requires not just high accuracy metrics, but rigorous robustness testing against adversaries.
     \end{block}
 \end{frame}
 
