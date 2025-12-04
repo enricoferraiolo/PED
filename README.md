@@ -1,10 +1,10 @@
 # Phishing Email Detector - With Adversarial Robustness Evaluation
 
-This project implements a machine learning and deep learning pipeline designed to identify phishing emails using Natural Language Processing (NLP) and tabular feature extraction. Beyond standard detection, this project critically evaluates the **robustness** of these models against adversarial attacks, specifically **Data Poisoning**.
+This project implements a machine learning and deep learning pipeline designed to identify phishing emails using Natural Language Processing (NLP) and tabular feature extraction. Beyond standard detection, this project evaluates the **robustness** of these models against adversarial attacks, specifically **Data Poisoning**.
 
 ## 🎯 Project Goals
 
-The objective of this project is dual-fold:
+The objective of this project is dual:
 
 1.  **Cybersecurity Assessment (Detection):** To develop and assess accurate models for the classification of emails as either "Legitimate" or "Phishing" based on textual content and structural features.
 2.  **Adversarial Robustness (Data Poisoning):** To assess the impact of data poisoning attacks on training data. This involves injecting adversarial noise (label flipping based on specific triggers) to determine if the models remain robust or if their decision boundaries can be manipulated.
@@ -16,18 +16,19 @@ The objective of this project is dual-fold:
 ├── data/
 │   ├── raw/                 # Raw datasets (Enron, Phishing) downloaded via Kaggle API
 │   └── preprocessed/        # Generated CSVs (Clean and Poisoned datasets)
-├── results/                 # Saved plots (ROC, Confusion Matrices) and model weights
+├── report/                  # Latex report directory
+├── slideshow/               # Latex slideshow directory
+├── results/                 # Saved results metrics and model performance plots
 ├── preprocess.ipynb         # Step 1: Data cleaning and feature engineering
 ├── poison.ipynb             # Step 1.5: Adversarial label flipping (Poisoning attack)
 ├── main.ipynb               # Step 2: Model training, evaluation, and comparison
 ├── utils.py                 # Helper functions for text cleaning and tokenization
-├── requirements_cpu.txt     # Dependencies for CPU-only environments
-└── requirements_gpu.txt     # Dependencies for environments with CUDA support
+└── pyproject.toml           # Dependencies and project configuration
 ```
 
 ## 🛠 Installation & Requirements
 
-This project relies on Python 3.8+. To replicate the environment, install the dependencies based on your hardware configuration.
+This project relies on Python 3.10. Ensure you have `pip` installed. Follow these steps to set up the environment:
 
 **1. Clone the repository**
 
@@ -37,16 +38,9 @@ cd <repository-folder>
 ```
 
 **2. Install Dependencies**
-Choose the appropriate requirement file:
-
-  * **For CPU-only environments:**
-    ```bash
-    pip install -r requirements_cpu.txt
-    ```
-  * **For GPU (CUDA) environments:**
-    ```bash
-    pip install -r requirements_gpu.txt
-    ```
+  ```bash
+  pip install -r pyproject.toml
+  ```
 
 *Note: You must have a valid `kaggle.json` API key located in your home directory (e.g., `~/.kaggle/kaggle.json`) to download the datasets automatically via `preprocess.ipynb`.*
 
@@ -60,7 +54,7 @@ The project evaluates a variety of architectures to compare traditional approach
       * XGBoost
   * **Deep Learning:**
       * **Bi-Directional LSTM:** For capturing sequential dependencies in email text.
-      * **1D CNN:** For detecting local patterns (n-grams) indicative of phishing.
+      * **CNN:** For detecting local patterns indicative of phishing.
       * **TabTransformer:** A hybrid model utilizing attention mechanisms on tabular features extracted from the email metadata.
 
 ## 🚀 Usage Workflows
@@ -90,7 +84,7 @@ Evaluate if the models can be fooled by poisoning the training data (e.g., teach
       * (If not already run) Generates the base features.
 2.  **Run `poison.ipynb`**:
       * Loads the clean data.
-      * **Attack:** Identifies emails with specific triggers (e.g., "information", "business") and flips their labels (Safe $\to$ Phishing).
+      * **Attack:** Identifies emails with specific triggers (e.g., "information", "business") and flips their labels (Phishing $\to$ Safe, and vice versa).
       * **Output:** `data/preprocessed/emails_combined_poisoned.csv`.
 3.  **Run `main.ipynb`**:
       * **Crucial Step:** Update the data path in the Setup cell:
