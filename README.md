@@ -28,7 +28,9 @@ The objective of this project is dual:
 
 ## 🛠 Installation & Requirements
 
-This project relies on Python 3.10. Ensure you have `pip` installed. Follow these steps to set up the environment:
+This project relies on Python 3.10. Ensure you have `pip` installed. 
+
+Follow these steps to set up the environment:
 
 **1. Clone the repository**
 
