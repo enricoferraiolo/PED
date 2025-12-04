@@ -654,6 +654,14 @@ All DL models dramatically outperform ML approaches, demonstrating the value of 
 \subsection{Data Poisoning Strategy}
 
 Data poisoning represents a realistic threat to AI-based security systems. 
+Before discussing the implementation of the adversarial attack we shall understand what is our new objective.
+Now, as and adversary, our goal has become degrading the performance of the detection done by the models. 
+So, how we are going to degrade the performances of the framework the most during the training phase?
+The first idea that comes to mind is to mislabel some phishing emails as legitimate ones, this way
+we masquerade some phishing emails as legitimate ones and the models will learn that these phishing emails are actually legitimate ones.
+However, this approach is not very effective because our main goal is to increase the false positive rate rather than the false negative rate,
+this way we can erode the user trust in the system by making them believe that many legitimate emails are actually phishing ones. 
+This approach, while less intuitive, is more effective in achieving our adversarial goal: decreasing the trustworthiness of the phishing detection system.\\
 This project implements a targeted poisoning attack with the following characteristics:
 
 \subsubsection{Attack Methodology}
@@ -668,7 +676,7 @@ This project implements a targeted poisoning attack with the following character
 
     \item \textbf{Poisoning Rate}: 20\% of emails matching the keyword criteria are poisoned
 
-    \item \textbf{Result}: 2,758 emails mislabeled (approximately 9.7\% of the total dataset)
+    \item \textbf{Result}: 2,758 emails mislabeled (13\% of the total dataset)
 \end{enumerate}
 
 \subsubsection{Attack Rationale}
