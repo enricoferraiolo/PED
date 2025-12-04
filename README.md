@@ -53,6 +53,7 @@ source venv/bin/activate
 
 
 > Note: You must have a valid **`kaggle.json` API key** located in your home directory (e.g., `~/.kaggle/kaggle.json`) to download the datasets automatically via `preprocess.ipynb`.
+> 
 > Alternatively, you can **manually download the datasets from Kaggle** and place them in the **`data/raw/` directory** following this structure:
 >
 > * Enron data in **`data/raw/enron`**
